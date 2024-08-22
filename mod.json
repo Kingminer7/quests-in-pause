@@ -10,12 +10,12 @@
   "name": "Quests in Pause Menu",
   "version": "v1.0.0",
   "developer": "km7dev",
-  "description": "Add a quests button to the pause menu",
+  "description": "Add a quest button to the pause menu",
   "resources": {
     "spritesheets": {
       "km7QuestSheet": [
-		"res/quests.png"
-	  ]
+        "res/quests.png"
+      ]
     }
   },
   "repository": "https://github.com/kingminer7/quests-in-pause",

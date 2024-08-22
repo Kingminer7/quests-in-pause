@@ -1,3 +1,3 @@
-# Template Mod
+# Quests in Pause Menu
 
-Edit about.md to change this
+Simple mod that, well, adds a quest button to the pause menu.
