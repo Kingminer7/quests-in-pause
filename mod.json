@@ -25,5 +25,12 @@
   "issues": {
 	"info": "Report issues on the github issues page.",
 	"url": "https://github.com/kingminer7/quests-in-pause/issues"
-  }
+  },
+  "dependencies": [
+    {
+      "id": "geode.node-ids",
+      "importance": "required",
+      "version": "1.13.2"
+    }
+  ]
 }
