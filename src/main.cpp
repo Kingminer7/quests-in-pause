@@ -12,7 +12,7 @@ class $modify(ModifiedPause, PauseLayer) {
 		auto questButton = CCMenuItemSpriteExtra::create(
 			sprite,
 			this,
-			menu_selector(ModifiedPause::onQuests)
+			menu_selector(CreatorLayer::onChallenge)
 		);
 		
 
@@ -22,9 +22,5 @@ class $modify(ModifiedPause, PauseLayer) {
 		questButton->setID("quests-button"_spr);
 
 		menu->updateLayout();
-	}
-
-	void onQuests(CCObject*) {
-		ChallengesPage::create()->show();
 	}
 };
