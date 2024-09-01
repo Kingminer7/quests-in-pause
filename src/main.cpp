@@ -1,4 +1,5 @@
 #include <Geode/modify/PauseLayer.hpp>
+#include <Geode/modify/CreatorLayer.hpp>
 
 using namespace geode::prelude;
 
