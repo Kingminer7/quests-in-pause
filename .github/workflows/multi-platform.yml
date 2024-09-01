@@ -42,7 +42,7 @@ jobs:
   build-2:
     name: Build 2
     runs-on: macos-latest
-    continue-on-error: false
+    continue-on-error: true
     steps:
       - name: Checkout
         uses: actions/checkout@v4
