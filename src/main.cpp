@@ -1,5 +1,6 @@
 #include <Geode/modify/PauseLayer.hpp>
 #include <Geode/modify/CreatorLayer.hpp>
+#include <Geode/binding/CCMenuItemSpriteExtra.hpp>
 
 using namespace geode::prelude;
 
