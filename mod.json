@@ -14,7 +14,7 @@
   "resources": {
     "spritesheets": {
       "km7QuestSheet": [
-        "res/quests.png"
+        "res/*.png"
       ]
     }
   },
