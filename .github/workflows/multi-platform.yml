@@ -59,7 +59,7 @@ jobs:
   package:
     name: Package builds
     runs-on: ubuntu-latest
-    needs: ['build']
+    needs: ['build', 'build-2]
 
     steps:
       - uses: geode-catgirls/build-geode-mod/combine@main
