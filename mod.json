@@ -30,7 +30,7 @@
     {
       "id": "geode.node-ids",
       "importance": "required",
-      "version": "1.13.2"
+      "version": "1.13.0"
     }
   ]
 }
