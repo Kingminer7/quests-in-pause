@@ -6,11 +6,8 @@ class $modify(ModifiedPause, PauseLayer) {
 	void customSetup() {
 		PauseLayer::customSetup();
 
-		CCNode * sprite = CircleButtonSprite::createWithSpriteFrameName("quests.png"_spr, .8f, CircleBaseColor::Green, CircleBaseSize::MediumAlt);
-		sprite->setScale(0.6);
-
 		auto questButton = CCMenuItemSpriteExtra::create(
-			sprite,
+			CCSprite::createWithSpriteFrameName("quests.png"_spr),
 			this,
 			menu_selector(CreatorLayer::onChallenge)
 		);
