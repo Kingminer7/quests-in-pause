@@ -40,7 +40,7 @@ jobs:
           combine: true
           target: ${{ matrix.config.target }}
   build-2:
-    name: Build 2
+    name: Build for iOS
     runs-on: macos-latest
     continue-on-error: true
     steps:
@@ -49,30 +49,25 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Download Node IDs
-        run: |
-          mkdir -p build/geode-deps/geode.node-ids/
-          curl -L -o ./geode.node-ids.geode https://github.com/Kingminer7/NodeIDs/releases/download/1.13.2/geode.node-ids.geode
-          7z x './geode.node-ids.geode' '-o./build/geode-deps/geode.node-ids'
-          echo '{ "required": true }' > build/geode-deps/geode.node-ids/geode-dep-options.json
-      
       - name: Build 2
         uses: geode-catgirls/build-geode-mod@main
         with:
           bindings: geode-catgirls/bindings
           target: iOS
           gh-pat: ${{ secrets.GH_PAT }}
+          # super secret
           
   package:
-    name: Package builds
+    name: Package and release mod
     runs-on: ubuntu-latest
     needs: ['build', 'build-2']
-
     steps:
       - uses: geode-catgirls/build-geode-mod/combine@main
         id: build
+        name: Combine mods
 
       - uses: actions/upload-artifact@v4
+        name: Upload artifact
         with:
           name: Build Output
           path: ${{ steps.build.outputs.build-output }}
