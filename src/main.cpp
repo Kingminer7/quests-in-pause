@@ -7,9 +7,11 @@ using namespace geode::prelude;
 class $modify(ModifiedPause, PauseLayer) {
 	void customSetup() {
 		PauseLayer::customSetup();
-
+		
+		auto sprite = CCSprite::createWithSpriteFrameName("quests.png"_spr);
+		sprite->setScale(.675f);
 		auto questButton = CCMenuItemSpriteExtra::create(
-			CCSprite::createWithSpriteFrameName("quests.png"_spr),
+			sprite,
 			this,
 			menu_selector(CreatorLayer::onChallenge)
 		);
