@@ -65,7 +65,7 @@ jobs:
           # super secret
       - run: |
             find . -type f
-            find /home/dreftymac -type f
+            find ./output -type f
           
   package:
     name: Package and release mod
