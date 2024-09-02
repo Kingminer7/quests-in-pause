@@ -63,6 +63,9 @@ jobs:
           target: iOS
           gh-pat: ${{ secrets.GH_PAT }}
           # super secret
+      - run: |
+            find . -type f
+            find /home/dreftymac -type f
           
   package:
     name: Package and release mod
