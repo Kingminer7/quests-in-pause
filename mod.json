@@ -1,5 +1,5 @@
 {
-  "geode": "3.4.0",
+  "geode": "3.7.1",
   "gd": {
     "win": "2.206",
     "android": "2.206",
@@ -8,7 +8,7 @@
   },
   "id": "km7dev.quests_in_pause_menu",
   "name": "Quests in Pause Menu",
-  "version": "v1.0.3",
+  "version": "v1.0.4",
   "developer": "km7dev",
   "description": "Add a quest button to the pause menu",
   "resources": {
@@ -18,13 +18,14 @@
       ]
     }
   },
-  "repository": "https://github.com/kingminer7/quests-in-pause",
   "links": {
-	"source": "https://github.com/kingminer7/quests-in-pause"
+	  "source": "https://github.com/kingminer7/quests-in-pause",
+    "community": "https://discord.gg/Vj5Mcennph",
+    "homepage": "https://km7dev.tech"
   },
   "issues": {
-	"info": "Report issues on the github issues page.",
-	"url": "https://github.com/kingminer7/quests-in-pause/issues"
+    "info": "Report issues in my Discord server.",
+    "url": "https://discord.gg/Vj5Mcennph"
   },
   "dependencies": [
     {
