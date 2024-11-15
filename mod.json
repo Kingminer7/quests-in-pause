@@ -1,12 +1,13 @@
 {
-  "geode": "4.0.0-alpha.1",
+  "geode": "4.0.0-bets.1",
   "gd": {
     "win": "2.2074",
-    "android": "2.2074"
+    "android": "2.2074",
+    "mac": "2.2074"
   },
   "id": "km7dev.quests_in_pause_menu",
   "name": "Quests in Pause Menu",
-  "version": "v1.0.5",
+  "version": "v1.0.6",
   "developer": "km7dev",
   "description": "Add a quest button to the pause menu",
   "resources": {
@@ -29,7 +30,7 @@
     {
       "id": "geode.node-ids",
       "importance": "required",
-      "version": "1.13.0"
+      "version": "1.17.0"
     }
   ]
 }
