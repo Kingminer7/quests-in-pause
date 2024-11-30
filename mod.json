@@ -1,15 +1,15 @@
 {
-  "geode": "4.0.0-beta.1",
+  "geode": "4.0.1",
   "gd": {
     "win": "2.2074",
     "android": "2.2074",
     "mac": "2.2074"
   },
   "id": "km7dev.quests_in_pause_menu",
-  "name": "Quests in Pause Menu",
+  "name": "Rewards in Pause Menu",
   "version": "v1.0.6",
   "developer": "km7dev",
-  "description": "Add a quest button to the pause menu",
+  "description": "Add a reward access to the pause menu",
   "resources": {
     "spritesheets": {
       "km7QuestSheet": [
@@ -32,5 +32,21 @@
       "importance": "required",
       "version": "1.17.0"
     }
-  ]
+  ],
+  "settings": {
+    "chests": {
+      "type":"string",
+      "default": "On Left",
+      "one-of": ["Off", "On Left", "On Right"],
+      "name": "Chest Button",
+      "description": "Choose where the chest button will be placed."
+    },
+    "quests": {
+      "type":"string",
+      "default": "On Right",
+      "one-of": ["Off", "On Left", "On Right"],
+      "name": "Quest Button",
+      "description": "Choose where the quest button will be placed."
+    }
+  }
 }
