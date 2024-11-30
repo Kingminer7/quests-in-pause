@@ -1,3 +1,7 @@
+# 1.1.0
+- Add chests to pause menu
+- Allow customization of which side the buttons are on
+- Rename mod
 # 1.0.6
 - Build for mac again
 - Geode 4.0.0-beta.1
