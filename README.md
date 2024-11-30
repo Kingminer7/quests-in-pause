@@ -1,5 +1,5 @@
-# Quests in Pause Menu
+# Rewards in Pause Menu
 
 <p align="center"><img src="logo.png" width="150" alt="the mod's logo" /></p>
 
-Simple mod that, well, adds a quest button to the pause menu.
+Mod that adds access to rewards in the pause menu.
