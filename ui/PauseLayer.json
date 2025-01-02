@@ -1,0 +1,54 @@
+{
+  "children": {
+    "node": {
+      "right-button-menu": {
+        "children": {
+          "new": [
+            {
+              "type": "CCMenuItemSpriteExtra",
+              "id": "km7dev.quests_in_pause_menu/chest-button",
+              "attributes": {
+                "sprite": "km7dev.quests_in_pause_menu/quests.png",
+                "update-layout": "parent"
+              },
+              "event": {
+                "on-activate": {
+                  "attributes": {
+                    "callback": {
+                      "class": "CreatorLayer",
+                      "method": "onChallenge"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "left-button-menu": {
+        "children": {
+          "new": [
+            {
+              "type": "CCMenuItemSpriteExtra",
+              "id": "km7dev.quests_in_pause_menu/chest-button",
+              "attributes": {
+                "sprite": "km7dev.quests_in_pause_menu/chest.png",
+                "update-layout": "parent"
+              },
+              "event": {
+                "on-activate": {
+                  "attributes": {
+                    "callback": {
+                      "class": "MenuLayer",
+                      "method": "onDaily"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}
