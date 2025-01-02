@@ -1,3 +1,6 @@
+# 1.1.1
+- Adjust sprites
+- Add info about texture pack
 # 1.1.0
 - Add chests to pause menu
 - Allow customization of which side the buttons are on
