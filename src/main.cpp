@@ -14,7 +14,7 @@ class $modify(ModifiedPause, PauseLayer) {
 
 		if (Mod::get()->getSettingValue<std::string>("chests") != "Off") {
 			auto chestSprite = CCSprite::createWithSpriteFrameName("chest.png"_spr);
-			chestSprite->setScale(.675f);
+			// chestSprite->setScale(.675f);
 			auto chestButton = CCMenuItemSpriteExtra::create(
 				chestSprite,
 				this,
@@ -33,7 +33,7 @@ class $modify(ModifiedPause, PauseLayer) {
 
 		if (Mod::get()->getSettingValue<std::string>("quests") != "Off") {
 			auto questSprite = CCSprite::createWithSpriteFrameName("quests.png"_spr);
-			questSprite->setScale(.675f);
+			// questSprite->setScale(.675f);
 			auto questButton = CCMenuItemSpriteExtra::create(
 				questSprite,
 				this,
