@@ -1,5 +1,5 @@
 {
-  "geode": "4.1.2",
+  "geode": "4.2.0",
   "gd": {
     "win": "2.2074",
     "android": "2.2074",
@@ -7,9 +7,9 @@
   },
   "id": "km7dev.quests_in_pause_menu",
   "name": "Rewards in Pause Menu",
-  "version": "v1.1.1",
+  "version": "v1.1.2",
   "developer": "km7dev",
-  "description": "Add a reward access to the pause menu",
+  "description": "Adds reward access to the pause menu",
   "resources": {
     "spritesheets": {
       "km7QuestSheet": [
@@ -26,13 +26,9 @@
     "info": "Report issues in my Discord server.",
     "url": "https://discord.gg/Vj5Mcennph"
   },
-  "dependencies": [
-    {
-      "id": "geode.node-ids",
-      "importance": "required",
-      "version": "1.17.0"
-    }
-  ],
+  "dependencies": {
+    "geode.node-ids": "1.20.0"
+  },
   "settings": {
     "chests": {
       "type":"string",
