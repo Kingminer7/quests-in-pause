@@ -1,12 +1,12 @@
 #include <Geode/modify/PauseLayer.hpp>
-#include <Geode/binding/CreatorLayer.hpp>
+#include <Geode/binding/ChallengesPage.hpp>
 #include <Geode/binding/MenuLayer.hpp>
 #include <Geode/binding/CCMenuItemSpriteExtra.hpp>
 #include <Geode/ui/BasedButtonSprite.hpp>
 
 using namespace geode::prelude;
 
-class $modify(ModifiedPause, PauseLayer) {
+class $modify(RewardPause, PauseLayer) {
 	void customSetup() {
 		PauseLayer::customSetup();
 
@@ -15,8 +15,8 @@ class $modify(ModifiedPause, PauseLayer) {
 
 		if (Mod::get()->getSettingValue<std::string>("chests") != "Off") {
 			auto chestSprite = CCSprite::createWithSpriteFrameName("GJ_dailyRewardBtn_001.png");
-			chestSprite->setScale(.9f);
 			auto chestCBS = CircleButtonSprite::create(chestSprite,CircleBaseColor::Green, CircleBaseSize::MediumAlt);
+			chestSprite->setScale(.65f);
 			chestCBS->setScale(0.6f);
 			auto chestButton = CCMenuItemSpriteExtra::create(
 				chestCBS,
@@ -36,13 +36,13 @@ class $modify(ModifiedPause, PauseLayer) {
 
 		if (Mod::get()->getSettingValue<std::string>("quests") != "Off") {
 			auto questSprite = CCSprite::createWithSpriteFrameName("quests.png"_spr);
-			questSprite->setScale(.675f);
 			auto questCBS = CircleButtonSprite::create(questSprite,CircleBaseColor::Green, CircleBaseSize::MediumAlt);
+			questSprite->setScale(.575f);
 			questCBS->setScale(0.6f);
 			auto questButton = CCMenuItemSpriteExtra::create(
 				questCBS,
 				this,
-				menu_selector(CreatorLayer::onChallenge)
+				menu_selector(RewardPause::onQuests)
 			);
 			questButton->setID("quest-button"_spr);
 
@@ -54,6 +54,10 @@ class $modify(ModifiedPause, PauseLayer) {
 				rightMenu->updateLayout();
 			}
 		}
+	}
 		
+	void onQuests(CCObject *sender) {
+		auto layer = ChallengesPage::create();
+		layer->show();
 	}
 };
