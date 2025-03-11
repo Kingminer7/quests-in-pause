@@ -1,3 +1,5 @@
+# 1.1.2
+- Use Circle Button Sprite
 # 1.1.1
 - Adjust sprites
 - Add info about texture pack
