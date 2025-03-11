@@ -6,10 +6,23 @@
           "new": [
             {
               "type": "CCMenuItemSpriteExtra",
-              "id": "km7dev.quests_in_pause_menu/chest-button",
+              "id": "km7dev.quests_in_pause_menu/quest-button",
               "attributes": {
-                "sprite": "km7dev.quests_in_pause_menu/quests.png",
+                "sprite": "geode.loader/baseCircle_MediumAlt_Green.png",
+                "scale": 0.6,
                 "update-layout": "parent"
+              },
+              "children": {
+                "new": [
+                  {
+                    "type": "CCSprite",
+                    "attributes": {
+                      "sprite": "km7dev.quests_in_pause_menu/quests.png",
+                      "update-layout": "parent",
+                      "scale": 0.65
+                    }
+                  }
+                ]
               },
               "event": {
                 "on-activate": {
@@ -32,8 +45,21 @@
               "type": "CCMenuItemSpriteExtra",
               "id": "km7dev.quests_in_pause_menu/chest-button",
               "attributes": {
-                "sprite": "km7dev.quests_in_pause_menu/chest.png",
+                "sprite": "geode.loader/baseCircle_MediumAlt_Green.png",
+                "scale": 0.6,
                 "update-layout": "parent"
+              },
+              "children": {
+                "new": [
+                  {
+                    "type": "CCSprite",
+                    "attributes": {
+                      "sprite": "GJ_dailyRewardBtn_001.png",
+                      "update-layout": "parent",
+                      "scale": 0.575
+                    }
+                  }
+                ]
               },
               "event": {
                 "on-activate": {
