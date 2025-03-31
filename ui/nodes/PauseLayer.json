@@ -1,0 +1,125 @@
+{
+  "children": {
+    "node": {
+      "right-button-menu": {
+        "children": {
+          "new": [
+            {
+              "type": "CCMenuItemSpriteExtra",
+              "id": "km7dev.quests_in_pause_menu-pack/quest-button",
+              "attributes": {
+                "update-layout": "parent",
+                "content-size": {
+                  "width": 30,
+                  "height": 32.25
+                }
+              },
+              "children": {
+                "new": [
+                  {
+                    "type": "CCSprite",
+                    "id": "base",
+                    "attributes": {
+                      "sprite": "geode.loader/baseCircle_MediumAlt_Green.png",
+                      "update-layout": "parent",
+                      "scale": 0.6,
+                      "position": {
+                          "anchor": "center"
+                      }
+                    },
+                    "children": {
+                      "new": [
+                        {
+                          "type": "CCSprite",
+                          "id": "sprite",
+                          "attributes": {
+                            "sprite": "km7dev.quests_in_pause_menu/quests.png",
+                            "update-layout": "parent",
+                            "scale": 0.575,
+                            "position": {
+                                "anchor": "center"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "event": {
+                "on-activate": {
+                  "attributes": {
+                    "callback": {
+                      "class": "CreatorLayer",
+                      "method": "onChallenge"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "left-button-menu": {
+        "children": {
+          "new": [
+            {
+              "type": "CCMenuItemSpriteExtra",
+              "id": "km7dev.quests_in_pause_menu-pack/chest-button",
+              "attributes": {
+                "scale": 0.6,
+                "update-layout": "parent",
+                "content-size": {
+                  "width": 30,
+                  "height": 32.25
+                }
+              },
+              "children": {
+                "new": [
+                  {
+                    "type": "CCSprite",
+                    "id": "base",
+                    "attributes": {
+                      "sprite": "geode.loader/baseCircle_MediumAlt_Green.png",
+                      "update-layout": "parent",
+                      "scale": 0.6,
+                      "position": {
+                          "anchor": "center"
+                      }
+                    },
+                    "children": {
+                      "new": [
+                        {
+                          "type": "CCSprite",
+                          "id": "sprite",
+                          "attributes": {
+                            "sprite": "GJ_dailyRewardBtn_001.png",
+                            "update-layout": "parent",
+                            "scale": 0.65,
+                            "position": {
+                                "anchor": "center"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "event": {
+                "on-activate": {
+                  "attributes": {
+                    "callback": {
+                      "class": "MenuLayer",
+                      "method": "onDaily"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}
