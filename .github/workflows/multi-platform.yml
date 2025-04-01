@@ -44,6 +44,7 @@ jobs:
         with:
           bindings: geode-sdk/bindings
           bindings-ref: main
+          cli: nightly
           sdk: nightly
           combine: true
           export-pdb: true
