@@ -35,7 +35,7 @@ class $modify(RewardPause, PauseLayer) {
 		}
 
 		if (Mod::get()->getSettingValue<std::string>("quests") != "Off") {
-			auto questSprite = CCSprite::createWithSpriteFrameName("quests.png"_spr);
+			auto questSprite = CCSprite::create("quests.png"_spr);
 			auto questCBS = CircleButtonSprite::create(questSprite,CircleBaseColor::Green, CircleBaseSize::MediumAlt);
 			questSprite->setScale(.575f);
 			questCBS->setScale(0.6f);
