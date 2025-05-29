@@ -37,8 +37,15 @@ class $modify(RewardPause, PauseLayer) {
         addButton("chests", MenuLayer::onDaily, chest, .65f);
         auto quest = CCSprite::create("quests.png"_spr);
         addButton("quests", RewardPause::onQuests, quest, .575f);
-        auto path = GJPathSprite::create(GameStatsManager::get()->m_activePath - 29);    
-        path->updateState();
+        auto pathId = GameStatsManager::get()->m_activePath - 29;
+        CCSprite *path;
+        if (pathId > 0 && pathId < 11) {
+            auto p =  GJPathSprite::create(pathId);
+            p->updateState();
+            path = p;
+        } else {
+            path = CCSprite::create("noPath.png"_spr);
+        }
         addButton("paths", CreatorLayer::onPaths, path, .75f);
 	}
 		
