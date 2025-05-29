@@ -44,7 +44,7 @@ jobs:
       # i want xwin :)
         uses: hiimjasmine00/build-geode-mod@xwin
         with:
-          bindings: geode-sdk/bindings
+          bindings: kingminer7/bindings
           bindings-ref: main
           combine: true
           export-pdb: true
