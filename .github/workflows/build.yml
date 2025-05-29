@@ -51,7 +51,7 @@ jobs:
         run: echo "RELEASE_BUILD=${{ github.event.inputs.build_type == 'release' }}" >> $GITHUB_ENV
 
       - name: Build the mod
-        uses: hiimjasmine00/build-geode-mod@main
+        uses: hiimjasmine00/build-geode-mod@xwin
         with:
           bindings: Kingminer7/bindings
           bindings-ref: main
