@@ -1,5 +1,5 @@
 {
-  "geode": "4.3.1",
+  "geode": "4.5.0",
   "gd": {
     "win": "2.2074",
     "android": "2.2074",
@@ -8,7 +8,7 @@
   },
   "id": "km7dev.quests_in_pause_menu",
   "name": "Rewards in Pause Menu",
-  "version": "v1.1.2",
+  "version": "v1.2.0",
   "developer": "km7dev",
   "description": "Adds reward access to the pause menu",
   "resources": {
@@ -42,6 +42,13 @@
       "one-of": ["Off", "On Left", "On Right"],
       "name": "Quest Button",
       "description": "Choose where the quest button will be placed."
+    },
+    "paths": {
+      "type":"string",
+      "default": "On Left",
+      "one-of": ["Off", "On Left", "On Right"],
+      "name": "Path Button",
+      "description": "Choose where the path button will be placed."
     }
   }
 }
