@@ -13,7 +13,8 @@ jobs:
       matrix:
         config:
         - name: Windows
-          os: windows-latest
+          os: ubuntu-latest
+          target: Win64
 
         - name: macOS
           os: macos-latest
@@ -41,7 +42,7 @@ jobs:
 
       - name: Build the mod
       # i want xwin :)
-        uses: hiimjasmine00/build-geode-mod@main
+        uses: hiimjasmine00/build-geode-mod@xwin
         with:
           bindings: geode-sdk/bindings
           bindings-ref: main
