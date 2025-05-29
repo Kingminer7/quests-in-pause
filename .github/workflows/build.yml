@@ -136,11 +136,6 @@ jobs:
             exit 1
           fi
           echo "MOD_VERSION=$MOD_VERSION" >> $GITHUB_ENV
-      - name: Extract Changelog
-        id: changelog
-        run: |
-            CHANGELOG=$(awk 'NR>1 && /^# /{if (p++) exit} p; NR>1 && /^# /{p=1}' changelog.md)
-            echo "CHANGELOG=$CHANGELOG" >> $GITHUB_ENV
       - name: Create Draft Release
         uses: softprops/action-gh-release@v1
         env:
@@ -148,7 +143,11 @@ jobs:
         with:
             tag_name: ${{ env.MOD_VERSION }}
             name: ${{ env.MOD_VERSION }}
-            body: ${{ env.CHANGELOG }}
+            body: |
+                TODO before publishing:
+                - mark if pre-release
+                - add changelog
+                - remove this
             draft: true
             files: |
                 ./artifacts/build-output/*.geode
