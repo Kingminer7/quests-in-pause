@@ -30,7 +30,7 @@ jobs:
           os: macos-latest
           target: iOS
 
-    name: Build (${{ matrix.config.name }})
+    name: Build ${{ matrix.config.name }}
     runs-on: ${{ matrix.config.os }}
 
     steps:
@@ -40,14 +40,14 @@ jobs:
           fetch-depth: 0
 
       - name: Build the mod
-        uses: geode-sdk/build-geode-mod@main
+      # i want xwin :)
+        uses: hiimjasmine00/build-geode-mod@main
         with:
           bindings: geode-sdk/bindings
           bindings-ref: main
-          cli: nightly
-          sdk: nightly
           combine: true
           export-pdb: true
+          export-symbols: true
           target: ${{ matrix.config.target }}
           
   package:

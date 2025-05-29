@@ -1,3 +1,6 @@
+# 1.2.0
+- Add Paths
+- (Developer) Recompile because of bindings destructor changes
 # 1.1.2
 - Use Circle Button Sprite (better TP compat)
 # 1.1.1
