@@ -3,11 +3,12 @@
 #include <Geode/binding/MenuLayer.hpp>
 #include <Geode/binding/CCMenuItemSpriteExtra.hpp>
 #include <Geode/ui/BasedButtonSprite.hpp>
+#include "MiniTreasureRoom.hpp"
 
 using namespace geode::prelude;
 
 #define addButton(name, callback, sprite, spriteScale) \
-    if (Mod::get()->getSettingValue<std::string>(name) != "Off") { \
+    if (sprite && Mod::get()->getSettingValue<std::string>(name) != "Off") { \
 		auto circleSprite = CircleButtonSprite::create(sprite, CircleBaseColor::Green, CircleBaseSize::MediumAlt); \
 		circleSprite->setScale(0.6f); \
         sprite->setScale(spriteScale); \
@@ -37,6 +38,8 @@ class $modify(RewardPause, PauseLayer) {
         addButton("chests", MenuLayer::onDaily, chest, .65f);
         auto quest = CCSprite::create("quests.png"_spr);
         addButton("quests", RewardPause::onQuests, quest, .575f);
+        auto treasure = CCSprite::createWithSpriteFrameName("chest03_small_001.png");
+        addButton("treasure", RewardPause::onTreasureRoom, treasure, .95);
         auto pathId = GameStatsManager::get()->m_activePath - 29;
         CCSprite *path;
         if (pathId > 0 && pathId < 11) {
@@ -49,8 +52,13 @@ class $modify(RewardPause, PauseLayer) {
         addButton("paths", CreatorLayer::onPaths, path, .75f);
 	}
 		
-	void onQuests(CCObject *sender) {
+	void onQuests(CCObject* sender) {
 		auto layer = ChallengesPage::create();
 		layer->show();
 	}
+
+    void onTreasureRoom(CCObject* sender) {
+        auto layer = MiniTreasureRoom::create();
+        layer->show();
+    }
 };

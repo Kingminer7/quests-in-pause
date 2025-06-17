@@ -49,6 +49,13 @@
       "one-of": ["Off", "On Left", "On Right"],
       "name": "Path Button",
       "description": "Choose where the path button will be placed."
+    },
+    "treasure": {
+      "type":"string",
+      "default": "On Left",
+      "one-of": ["Off", "On Left", "On Right"],
+      "name": "Path Button",
+      "description": "Choose where the treasure room button will be placed."
     }
   }
 }
