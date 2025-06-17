@@ -1,7 +1,9 @@
 #include "MiniTreasureRoom.hpp"
+#include "Geode/cocos/CCDirector.h"
+#include "Geode/ui/Layout.hpp"
 
 bool MiniTreasureRoom::setup() {
-
+  m_bgSprite->removeFromParent();
   CCTextureCache::get()->addImage("TreasureRoomSheet.png", false);
   CCSpriteFrameCache::get()->addSpriteFramesWithFile("TreasureRoomSheet.plist");
 
@@ -29,12 +31,24 @@ bool MiniTreasureRoom::setup() {
   auto title = CCSprite::createWithSpriteFrameName("treasureRoomLabel_001.png");
   m_mainLayer->addChildAtPosition(title, Anchor::Top, {0, -42.f});
 
+  m_buttonMenu->setID("button-menu");
+  m_closeBtn->setID("back-button");
+  m_closeBtn->setLayoutOptions(AnchorLayoutOptions::create()->setAnchor(Anchor::TopLeft)->setOffset({25, -22}));
+  m_closeBtn->setSprite(CCSprite::createWithSpriteFrameName("GJ_arrow_03_001.png"));
+
   return true;
+}
+
+void MiniTreasureRoom::onClose(CCObject* sender) {
+  Popup::onClose(sender);
+  CCTextureCache::get()->removeTextureForKey("TreasureRoomSheet.png");
+  CCSpriteFrameCache::get()->removeSpriteFramesFromFile("TreasureRoomSheet.plist");
 }
 
 MiniTreasureRoom* MiniTreasureRoom::create() {
     auto ret = new MiniTreasureRoom;
-    if (ret && ret->initAnchored(420, 320)) {
+    auto ws = CCDirector::get()->getWinSize();
+    if (ret && ret->initAnchored(ws.width, ws.height)) {
         ret->autorelease();
         return ret;
     }
