@@ -62,6 +62,5 @@ class $modify(RewardPause, PauseLayer) {
         layer->show();
         // setKeyboardEnabled(false);
         // setKeypadEnabled(false);
-        setTouchEnabled(true);
     }
 };
