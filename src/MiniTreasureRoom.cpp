@@ -49,7 +49,7 @@ void MiniTreasureRoom::show() {
     setPosition({0, dir->getWinSize().height + 5});
     this->setVisible(true);
     if (auto pl = CCScene::get()->getChildByType<PauseLayer*>(0)) {
-        CCTouchDispatcher::get()->findHandler(pl)->setPriority(-501);
+        CCTouchDispatcher::get()->setPriority(-501, pl);
     }
     stopAllActions();
     runAction(CCEaseBounceOut::create(CCMoveTo::create(0.5, {0, 0})));
@@ -63,7 +63,7 @@ void MiniTreasureRoom::onBack(CCObject* sender) {
     stopAllActions();
     runAction(CCSequence::createWithTwoActions(CCMoveTo::create(0.3, {0, CCDirector::sharedDirector()->getWinSize().height + 5}), CCCallFunc::create(this, callfunc_selector(MiniTreasureRoom::transitionFinished))));
     if (auto pl = CCScene::get()->getChildByType<PauseLayer*>(0)) {
-        CCTouchDispatcher::get()->findHandler(pl)->setPriority(-502);
+        CCTouchDispatcher::get()->setPriority(-502, pl);
     }
 }
 bool MiniTreasureRoom::ccTouchBegan(CCTouch* touch, CCEvent* event) {
