@@ -1,25 +1,16 @@
-#include <Geode/Geode.hpp>
+#pragma once
 
 using namespace geode::prelude;
 
-class MiniTreasureRoom : public Popup<>, DynamicScrollDelegate {
+class MiniTreasureRoom : public SecretRewardsLayer {
     protected:
-        bool setup() override;
-	    void onClose(CCObject* sender) override;
-        void onNav(CCObject* sender);
-        void updatePageWithObject(cocos2d::CCObject* p0, cocos2d::CCObject* p1) override;
-
-        int m_page = 0;
-
-        CCLabelBMFont* m_keyLab;
-        CCSprite* m_keySpr;
-        CCLabelBMFont* m_goldLab;
-        CCSprite* m_goldSpr;
-        BoomScrollLayer* m_bs;
+        bool init() override;
+        void onBack(CCObject* sender);
+        void keyBackClicked() override;
+        void transitionFinished();
+        bool ccTouchBegan(CCTouch* touch, CCEvent* event) override;
+        void onExit() override;
     public:
         static MiniTreasureRoom* create();
-
-        void goToPage(int page);
-        void onChest(CCObject* sender);
-        void onGoldChest();
+        void show();
 };
