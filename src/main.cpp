@@ -51,7 +51,7 @@ class $modify(RewardPause, PauseLayer) {
         }
         addButton("paths", CreatorLayer::onPaths, path, .75f);
 	}
-		
+	
 	void onQuests(CCObject* sender) {
 		auto layer = ChallengesPage::create();
 		layer->show();
@@ -60,5 +60,8 @@ class $modify(RewardPause, PauseLayer) {
     void onTreasureRoom(CCObject* sender) {
         auto layer = MiniTreasureRoom::create();
         layer->show();
+        // setKeyboardEnabled(false);
+        // setKeypadEnabled(false);
+        setTouchEnabled(true);
     }
 };
