@@ -21,4 +21,5 @@ class MiniTreasureRoom : public Popup<>, DynamicScrollDelegate {
 
         void goToPage(int page);
         void onChest(CCObject* sender);
+        void onGoldChest();
 };
