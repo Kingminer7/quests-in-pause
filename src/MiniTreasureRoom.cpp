@@ -68,7 +68,7 @@ bool MiniTreasureRoom::setup() {
   m_bs->ignoreAnchorPointForPosition(false);
   m_mainLayer->addChildAtPosition(m_bs, Anchor::Center, {0, 0});
 
-  #define CREATE_CHEST(tier, menu, id, pos, costSprite, rewardType) \
+  #define CREATE_CHEST(tier, menu, id, pos, costSprite, rewardType, costScale, addCounter) \
     { \
         GJChestSprite* chest = GJChestSprite::create((int) rewardType); \
         chest->setScale(.6f); \
@@ -79,13 +79,17 @@ bool MiniTreasureRoom::setup() {
         menu->addChildAtPosition(chestBtn, Anchor::Center, pos); \
         \
         CCSprite* chestCost = CCSprite::createWithSpriteFrameName(costSprite); \
-        chestCost->setScale(.8f); \
+        chestCost->setScale(costScale); \
+        chestCost->setID(fmt::format("{}-cost", id)); \
         tier->addChildAtPosition(chestCost, Anchor::Center, {pos.x, pos.y - 54}); \
         \
-        CCLabelBMFont* chestCounter = CCLabelBMFont::create(fmt::format("{} / {}", GameStatsManager::get()->countUnlockedSecretChests(rewardType), GameStatsManager::get()->countSecretChests(rewardType)).c_str(), "bigFont.fnt"); \
-        chestCounter->setColor(ccColor3B{187, 122, 107}); \
-        chestCounter->setScale(.4f); \
-        tier->addChildAtPosition(chestCounter, Anchor::Center, {pos.x, pos.y - 89}); \
+        if (addCounter) { \
+            CCLabelBMFont* chestCounter = CCLabelBMFont::create(fmt::format("{} / {}", GameStatsManager::get()->countUnlockedSecretChests(rewardType), GameStatsManager::get()->countSecretChests(rewardType)).c_str(), "bigFont.fnt"); \
+            chestCounter->setColor(ccColor3B(187, 122, 107)); \
+            chestCounter->setScale(.4f); \
+            chestCounter->setID(fmt::format("{}-counter", id)); \
+            tier->addChildAtPosition(chestCounter, Anchor::Center, {pos.x, pos.y - 89}); \
+        } \
     }
 
   // tier 1 page
@@ -99,12 +103,12 @@ bool MiniTreasureRoom::setup() {
   tierOneMenu->setID("chest-menu");
   tierOneMenu->ignoreAnchorPointForPosition(false);
   tierOne->addChildAtPosition(tierOneMenu, Anchor::Center, {0, -0});  
-  CREATE_CHEST(tierOne, tierOneMenu, "one-key-chest", CCPoint(-100, 10), "chest_03_price_001.png", GJRewardType::SmallTreasure);
-  CREATE_CHEST(tierOne, tierOneMenu, "five-key-chest", CCPoint(0, 10), "chest_04_price_001.png", GJRewardType::LargeTreasure);
-  CREATE_CHEST(tierOne, tierOneMenu, "ten-key-chest", CCPoint(100, 10), "chest_05_price_001.png", GJRewardType::Key10Treasure);
+  CREATE_CHEST(tierOne, tierOneMenu, "one-key-chest", CCPoint(-100, 10), "chest_03_price_001.png", GJRewardType::SmallTreasure, .8f, true)
+  CREATE_CHEST(tierOne, tierOneMenu, "five-key-chest", CCPoint(0, 10), "chest_04_price_001.png", GJRewardType::LargeTreasure, .8f, true)
+  CREATE_CHEST(tierOne, tierOneMenu, "ten-key-chest", CCPoint(100, 10), "chest_05_price_001.png", GJRewardType::Key10Treasure, .8f, true)
 
   // tier 2 page
-  tierOne->setID("tier-two");
+  tierTwo->setID("tier-two");
   
   CCSprite* tierTwoTitle = CCSprite::createWithSpriteFrameName("tier2label_001.png");
   tierTwoTitle->setScale(.8f);
@@ -114,10 +118,50 @@ bool MiniTreasureRoom::setup() {
   tierTwoMenu->setID("chest-menu");
   tierTwoMenu->ignoreAnchorPointForPosition(false);
   tierTwo->addChildAtPosition(tierTwoMenu, Anchor::Center, {0, -0});  
-  CREATE_CHEST(tierTwo, tierTwoMenu, "twenty-five-key-chest", CCPoint(-100, 10), "chest_06_price_001.png", GJRewardType::Key25Treasure);
-  CREATE_CHEST(tierTwo, tierTwoMenu, "fifty-key-chest", CCPoint(0, 10), "chest_07_price_001.png", GJRewardType::Key50Treasure);
-  CREATE_CHEST(tierTwo, tierTwoMenu, "hundred-key-chest", CCPoint(100, 10), "chest_08_price_001.png", GJRewardType::Key100Treasure);
+  CREATE_CHEST(tierTwo, tierTwoMenu, "twenty-five-key-chest", CCPoint(-100, 10), "chest_06_price_001.png", GJRewardType::Key25Treasure, .8f, true)
+  CREATE_CHEST(tierTwo, tierTwoMenu, "fifty-key-chest", CCPoint(0, 10), "chest_07_price_001.png", GJRewardType::Key50Treasure, .8f, true)
+  CREATE_CHEST(tierTwo, tierTwoMenu, "hundred-key-chest", CCPoint(100, 10), "chest_08_price_001.png", GJRewardType::Key100Treasure, .8f, true)
 
+  // bonus page
+  bonuses->setID("bonuses");
+  
+  
+ 
+  CCMenu* bonusesMenu = CCMenu::create();
+  bonusesMenu->setID("chest-menu");
+  bonusesMenu->ignoreAnchorPointForPosition(false);
+  bonuses->addChildAtPosition(bonusesMenu, Anchor::Center, {0, -0});  
+  CREATE_CHEST(bonuses, bonusesMenu, "50-milestone-chest", CCPoint(-100, 10), "chestSpecial_01_price_001.png", GJRewardType::Large, 1.f, false)
+  CREATE_CHEST(bonuses, bonusesMenu, "100-milestone-chest", CCPoint(0, 10), "chestSpecial_02_price_001.png", GJRewardType::Large, 1.f, false)
+  CREATE_CHEST(bonuses, bonusesMenu, "200-milestone-chest", CCPoint(100, 10), "chestSpecial_03_price_001.png", GJRewardType::Large, 1.f, false)
+
+  // bonus page
+  event->setID("bonuses");
+ 
+  CCMenu* eventMenu = CCMenu::create();
+  eventMenu->setID("chest-menu");
+  eventMenu->ignoreAnchorPointForPosition(false);
+  event->addChildAtPosition(eventMenu, Anchor::Center, {0, -0}); 
+
+  GJChestSprite* chest = GJChestSprite::create((int)GJRewardType::Gold);
+  chest->setScale(.6f);
+  CCMenuItemSpriteExtra* chestBtn = CCMenuItemSpriteExtra::create(chest, this, menu_selector(MiniTreasureRoom::onChest));
+  chestBtn->setContentSize(chest->getChildByType<CCSprite*>(0)->getContentSize());
+  chest->setPosition(chestBtn->getContentSize() / 2);
+  chestBtn->setID("event-chest");
+  eventMenu->addChildAtPosition(chestBtn, Anchor::Center, CCPoint(0, 10));
+
+  CCSprite* chestCost = CCSprite::createWithSpriteFrameName("chest_09_price_001.png");
+  chestCost->setScale(.96f);
+  chestCost->setID("event-chest-cost");
+  event->addChildAtPosition(chestCost, Anchor::Center, {0, 10 - 54});
+
+  CCLabelBMFont* chestCounter = CCLabelBMFont::create(fmt::format("{} / {}", GameStatsManager::get()->countUnlockedSecretChests(GJRewardType::Gold), GameStatsManager::get()->countSecretChests(GJRewardType::Gold)).c_str(), "bigFont.fnt");
+  chestCounter->setColor(ccColor3B(100, 87, 112));
+  chestCounter->setScale(.5f);
+  chestCounter->setID("event-chest-counter");
+  event->addChildAtPosition(chestCounter, Anchor::Center, {0, 10 + 72});
+  
   return true;
 }
 
@@ -146,8 +190,8 @@ void MiniTreasureRoom::onChest(CCObject* sender) {
     auto btn = dynamic_cast<CCMenuItemSpriteExtra*>(sender);
     if (!btn) return;
 
-    if (btn->getID() == "one-key-chest") {
-        
+    if (btn->getID() == "event-chest") {
+        onGoldChest();
     }
 }
 
@@ -164,4 +208,57 @@ MiniTreasureRoom* MiniTreasureRoom::create() {
     }
     delete ret;
     return nullptr;
+}
+
+void MiniTreasureRoom::onGoldChest() {
+  GameStatsManager *statsManager = GameStatsManager::get();
+
+  int goldKeyCount = statsManager->getStat("43");
+  int chestId = 6001;
+
+  while (chestId < 6021) {
+    if (!statsManager->isSecretChestUnlocked(chestId)) {
+      break;
+    }
+    chestId++;
+  }
+
+  if (goldKeyCount < 1) {
+    DialogObject *dialog = DialogObject::create("The Key", "You need a <cy>Gold Key</c> to unlock this <cg>chest</c>.", 2, 1.0, false, ccWHITE);
+    DialogLayer *dialogLayer = DialogLayer::createDialogLayer(dialog, nullptr, 2);
+    dialogLayer->addToMainScene();
+
+    CCDirector *director = CCDirector::sharedDirector();
+    CCPoint center = director->getWinSize() * 0.5;
+    dialogLayer->setPosition(center);
+    dialogLayer->animateInRandomSide();
+  }
+  else if (chestId == 0x1785) {
+    DialogObject *dialog = DialogObject::create("The Key", "All out of <cy>Gold Chests</c> right now. Come back later.", 2, 1.0, false, ccWHITE);
+    DialogLayer *dialogLayer = DialogLayer::createDialogLayer(dialog, nullptr, 2);
+    dialogLayer->addToMainScene();
+
+    CCDirector *director = CCDirector::sharedDirector();
+    CCPoint center = director->getWinSize() * 0.5;
+    dialogLayer->setPosition(center);
+    dialogLayer->animateInRandomSide();
+  } else {
+    auto rewardItem = statsManager->getRewardItem(GJRewardType::Gold);
+    if (rewardItem && goldKeyCount > 0) {
+      statsManager->setStat("43", goldKeyCount - 1);
+      statsManager->preProcessReward(rewardItem);
+      statsManager->registerRewardsFromItem(rewardItem);
+
+      RewardUnlockLayer *rewardLayer = RewardUnlockLayer::create(rewardItem->m_chestID, nullptr);
+      this->addChild(rewardLayer, 100);
+
+      rewardLayer->playRewardEffect();
+    //   FMODAudioEngine::getInstance()->fadeMusic(1.0, 100, 1.0, 0.2);
+
+    //   CCCallFunc *callback = CCCallFunc::create(this, callfunc_selector(SecretRewardsLayer::onRewardComplete));
+    //   CCDelayTime *delay = CCDelayTime::create(3.2);
+    //   CCSequence *sequence = CCSequence::create(delay, callback, nullptr);
+    //   this->runAction(sequence);
+    }
+  }
 }
