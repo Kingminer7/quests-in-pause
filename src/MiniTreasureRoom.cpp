@@ -1,10 +1,45 @@
 #include "MiniTreasureRoom.hpp"
+#include <Geode/modify/GameManager.hpp>
+
+// This weird system is to stop the treasure room loop from overwriting the level's song
+
+Hook* fadeHook = nullptr;
+
+class $modify(RewardGM, GameManager) {
+    static void onModify(auto& self) {
+        if (auto h = self.getHook("GameManager::fadeInMusic")) {
+            fadeHook = h.unwrap();
+            fadeHook->setAutoEnable(false);
+            auto res = fadeHook->disable();
+            if (res.isErr()) {
+                log::warn("Failed to disable GameManager::fadeInMusic - {}", res.unwrapErr());
+            }
+        }
+    }
+
+    void fadeInMusic(gd::string p0) {
+        
+    }
+};
 
 bool MiniTreasureRoom::setup() {
+    if (fadeHook) {
+        auto res = fadeHook->enable();
+        if (res.isErr()) {
+            log::warn("Failed to enable GameManager::fadeInMusic - {}", res.unwrapErr());
+        }
+    } else {
+        log::warn("Hook not found!");
+    }
     m_rewardLayer = SecretRewardsLayer::create(false);
-    m_mainLayer->removeFromParent();
+    if (fadeHook) {
+        auto res = fadeHook->disable();
+        if (res.isErr()) {
+            log::warn("Failed to disable GameManager::fadeInMusic - {}", res.unwrapErr());
+        }
+    }
+    m_mainLayer->setVisible(false);
     addChild(m_rewardLayer);
-    m_mainLayer = m_rewardLayer;
     setID("MiniTreasureRoom"_spr);
     setOpacity(0);
 
@@ -38,8 +73,8 @@ MiniTreasureRoom* MiniTreasureRoom::create()  {
 
 void MiniTreasureRoom::onClose(CCObject* sender) {
     if (!m_rewardLayer->m_inMainLayer) return m_rewardLayer->onBack(sender);
-    m_mainLayer->stopAllActions();
-    m_mainLayer->runAction(CCSequence::createWithTwoActions(CCMoveTo::create(0.3, {0, CCDirector::sharedDirector()->getWinSize().height + 5}), CCCallFunc::create(this, callfunc_selector(MiniTreasureRoom::transitionFinished))));
+    m_rewardLayer->stopAllActions();
+    m_rewardLayer->runAction(CCSequence::createWithTwoActions(CCMoveTo::create(0.3, {0, CCDirector::sharedDirector()->getWinSize().height + 5}), CCCallFunc::create(this, callfunc_selector(MiniTreasureRoom::transitionFinished))));
 }
 
 void MiniTreasureRoom::transitionFinished() {
@@ -51,8 +86,9 @@ void MiniTreasureRoom::show() {
     auto dir = CCDirector::sharedDirector();
     m_noElasticity = true;
     Popup::show();
+    m_mainLayer->setVisible(false);
     m_noElasticity = false;
-    m_mainLayer->setPosition({0, dir->getWinSize().height + 5});
-    m_mainLayer->stopAllActions();
-    m_mainLayer->runAction(CCEaseBounceOut::create(CCMoveTo::create(0.5, {0, 0})));
+    m_rewardLayer->setPosition({0, dir->getWinSize().height + 5});
+    m_rewardLayer->stopAllActions();
+    m_rewardLayer->runAction(CCEaseBounceOut::create(CCMoveTo::create(0.5, {0, 0})));
 }
