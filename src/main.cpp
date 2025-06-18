@@ -60,7 +60,5 @@ class $modify(RewardPause, PauseLayer) {
     void onTreasureRoom(CCObject* sender) {
         auto layer = MiniTreasureRoom::create();
         layer->show();
-        // setKeyboardEnabled(false);
-        // setKeypadEnabled(false);
     }
 };
