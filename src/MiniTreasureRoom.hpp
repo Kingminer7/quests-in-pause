@@ -2,15 +2,14 @@
 
 using namespace geode::prelude;
 
-class MiniTreasureRoom : public SecretRewardsLayer {
+class MiniTreasureRoom : public Popup<> {
     protected:
-        bool init() override;
-        void onBack(CCObject* sender);
-        void keyBackClicked() override;
+        bool setup() override;
         void transitionFinished();
-        bool ccTouchBegan(CCTouch* touch, CCEvent* event) override;
-        void onExit() override;
     public:
         static MiniTreasureRoom* create();
-        void show();
+        void onClose(CCObject* sender) override;
+        void show() override;
+
+        SecretRewardsLayer* m_rewardLayer;
 };
