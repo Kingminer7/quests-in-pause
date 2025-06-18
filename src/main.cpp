@@ -58,7 +58,32 @@ class $modify(RewardPause, PauseLayer) {
 	}
 
     void onTreasureRoom(CCObject* sender) {
-        auto layer = MiniTreasureRoom::create();
-        layer->show();
+        int count = GameStatsManager::get()->getStat("21");
+        if (GameManager::get()->getUGV("5")) {
+            auto layer = MiniTreasureRoom::create();
+            layer->show();
+        } else if (count < 5) {
+            int needed = 5 - count;
+            auto dialog = DialogObject::create("The Keymaster", fmt::format("Collect <cy>{}</c> more <cg>key{}</c>,<d020>\nand I will let you pass.", needed, needed > 1 ? "s" : "").c_str(), 2, 1.0, false, ccWHITE);
+            auto dialogLayer = DialogLayer::createDialogLayer(dialog, nullptr, 2);
+            dialogLayer->setZOrder(9999);
+            dialogLayer->animateInRandomSide();
+            this->addChild(dialogLayer);
+        } else {
+            auto arr = CCArray::create();
+            auto dialog1 = DialogObject::create("The Keymaster", "Well, well, well.<d035>\nLook who it is.", 2, 1.0, false, ccWHITE);
+            auto dialog2 = DialogObject::create("The Keymaster", "I see you have the <cg>keys</c>.<d040>\nBut what comes next?", 2, 1.0, false, ccWHITE);
+            auto dialog3 = DialogObject::create("The Keymaster", "The <co>door</c> is open.<d040>\nTime to find out<d010>.<d010>.<d010>.", 2, 1.0, false, ccWHITE);
+
+            arr->addObject(dialog1);
+            arr->addObject(dialog2);
+            arr->addObject(dialog3);
+
+            auto dialogLayer = DialogLayer::createDialogLayer(nullptr, arr, 2);
+            dialogLayer->setZOrder(9999);
+            dialogLayer->animateInRandomSide();
+            this->addChild(dialogLayer);
+            GameManager::get()->setUGV("5", true);
+        }
     }
 };
