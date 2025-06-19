@@ -1,5 +1,6 @@
 # 1.3.0
 - Add treasure room chests
+- New pixel art logo!
 # 1.2.0
 - Add Paths
 - (Developer) Recompile because of bindings destructor changes
