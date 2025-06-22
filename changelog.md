@@ -1,3 +1,5 @@
+# 1.3.1
+- JIT-less iOS support
 # 1.3.0
 - Add treasure room chests
 - New pixel art logo!
