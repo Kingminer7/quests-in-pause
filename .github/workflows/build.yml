@@ -20,6 +20,7 @@ jobs:
   build:
     strategy:
       fail-fast: false
+      
       matrix:
         config:
         - name: Windows
@@ -43,7 +44,7 @@ jobs:
 
     name: ${{ matrix.config.name }}
     runs-on: ${{ matrix.config.os }}
-
+    continue-on-error: ${{ github.event.inputs.build_type != 'release' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -53,7 +54,7 @@ jobs:
       - name: Build the mod
         uses: hiimjasmine00/build-geode-mod@xwin
         with:
-          bindings: Kingminer7/bindings
+          bindings: geode-sdk/bindings
           bindings-ref: main
           combine: true
           build-config: ${{ github.event.inputs.build_type != 'release' && 'RelWithDebInfo' || 'Release' }}
@@ -89,9 +90,6 @@ jobs:
         with:
           path: './artifacts/'
 
-      #- run: |
-      #    7z x ./artifacts/build-output.zip
-
       - name: Create Nightly Release
         uses: andelf/nightly-release@main
         env:
@@ -125,31 +123,21 @@ jobs:
       - name: Read mod version & mod id
         id: read_version
         run: |
-          MOD_VERSION=$(jq -r '.version' mod.json)
-          set +e
-          curl --fail "https://api.github.com/repos/geode-sdk/geode/releases/tags/v$VERSION" --silent --output /dev/null
-          RESULT=$?
-          set -e
-          
-          if [ $RESULT -eq 0 ]; then
-            echo "Release already exists! Not replacing it.."
-            exit 1
-          fi
-          echo "MOD_VERSION=$MOD_VERSION" >> $GITHUB_ENV
+          echo "MOD_VERSION=$(jq -r '.version' mod.json)" >> $GITHUB_ENV
       - name: Create Draft Release
         uses: softprops/action-gh-release@v1
         env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-            tag_name: ${{ env.MOD_VERSION }}
-            name: ${{ env.MOD_VERSION }}
-            body: |
-                TODO before publishing:
-                - mark if pre-release
-                - add changelog
-                - remove this
-            draft: true
-            files: |
-                ./artifacts/build-output/*.geode
-                ./artifacts/build-output/*.pdb
-                ./artifacts/build-output/*.sym
+          tag_name: ${{ env.MOD_VERSION }}
+          name: ${{ env.MOD_VERSION }}
+          body: |
+            TODO before publishing:
+             - mark if pre-release
+             - add changelog
+             - remove this
+          draft: true
+          files: |
+            ./artifacts/build-output/*.geode
+            ./artifacts/build-output/*.pdb
+            ./artifacts/build-output/*.sym
