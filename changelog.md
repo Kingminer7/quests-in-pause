@@ -1,3 +1,5 @@
+# 1.3.2
+- Fix mislabeled setting (thanks colon!)
 # 1.3.1
 - JIT-less iOS support
 # 1.3.0
