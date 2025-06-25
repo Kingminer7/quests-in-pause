@@ -1,5 +1,5 @@
 {
-  "geode": "4.6.0",
+  "geode": "4.6.1",
   "gd": {
     "win": "2.2074",
     "android": "2.2074",
@@ -8,7 +8,7 @@
   },
   "id": "km7dev.quests_in_pause_menu",
   "name": "Rewards in Pause Menu",
-  "version": "v1.3.1",
+  "version": "v1.3.2",
   "developer": "km7dev",
   "description": "Adds reward access to the pause menu",
   "resources": {
@@ -54,7 +54,7 @@
       "type":"string",
       "default": "On Left",
       "one-of": ["Off", "On Left", "On Right"],
-      "name": "Path Button",
+      "name": "Treasure Room Button",
       "description": "Choose where the treasure room button will be placed."
     }
   }
