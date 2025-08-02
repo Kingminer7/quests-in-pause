@@ -24,8 +24,12 @@ jobs:
       matrix:
         config:
         - name: Windows
+          # this does linux to windows cross comp
           os: ubuntu-latest
           target: Win64
+          # if you don't want cross comp replace it with this
+          # os: windows-latest
+          # target isnt necessary if os is windows
 
         - name: macOS
           os: macos-latest
