@@ -57,7 +57,7 @@ jobs:
           bindings: geode-sdk/bindings
           bindings-ref: main
           combine: true
-          build-config: ${{ github.event.inputs.build_type != 'release' && 'RelWithDebInfo' || 'Release' }}
+          build-config: ${{ github.event.inputs.build_type != 'release' && (matrix.arget == 'Win64' && 'RelWithDebInfo' || 'Debug') || 'Release' }}
           export-pdb: true
           export-symbols: true
           target: ${{ matrix.config.target }}
