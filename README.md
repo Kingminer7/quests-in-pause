@@ -7,6 +7,3 @@ Adds buttons to the pause menu for the following:
 - Treasure Room Chests
 
 You can change which side each button is on in mod settings!
-
-## Notes/Known Issues
-- Sound effects don't play until unpause: cannot fix
