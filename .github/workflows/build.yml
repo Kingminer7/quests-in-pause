@@ -48,7 +48,7 @@ jobs:
 
     name: ${{ matrix.config.name }}
     runs-on: ${{ matrix.config.os }}
-    continue-on-error: ${{ github.event.inputs.build_type != 'release' }}
+    # continue-on-error: ${{ github.event.inputs.build_type != 'release' }}
     steps:
       - uses: actions/checkout@v4
 

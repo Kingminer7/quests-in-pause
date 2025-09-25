@@ -1,6 +1,7 @@
 #include <Geode/modify/PauseLayer.hpp>
 #include <Geode/modify/RewardsPage.hpp>
 #include <Geode/modify/ChallengeNode.hpp>
+#include <Geode/modify/System.hpp>
 #include <Geode/binding/ChallengesPage.hpp>
 #include <Geode/binding/MenuLayer.hpp>
 #include <Geode/binding/CCMenuItemSpriteExtra.hpp>
@@ -8,6 +9,10 @@
 #include "MiniTreasureRoom.hpp"
 
 using namespace geode::prelude;
+
+// ill admit this is probably some of the msot evil code ive written
+// but like, these now have sounds in the pause menu
+static FMOD::ChannelGroup* g_group;
 
 #define addButton(name, callback, sprite, spriteScale) \
     if (sprite && Mod::get()->getSettingValue<std::string>(name) != "Off") { \
@@ -30,74 +35,74 @@ using namespace geode::prelude;
     }
 
 class $modify(RewardPause, PauseLayer) {
-	void customSetup() {
-		PauseLayer::customSetup();
+    void customSetup() {
+        PauseLayer::customSetup();
+        g_group->setVolume(FMODAudioEngine::get()->m_sfxVolume);
 
-		auto rightMenu = this->getChildByID("right-button-menu");
-		auto leftMenu = this->getChildByID("left-button-menu");
+        auto rightMenu = this->getChildByID("right-button-menu");
+        auto leftMenu = this->getChildByID("left-button-menu");
 
         auto chest = CCSprite::createWithSpriteFrameName("GJ_dailyRewardBtn_001.png");
-	auto gsm = GameStatsManager::get();
-	if (gsm->m_rewardItems->count() == 0) {
-		GameLevelManager::get()->getGJRewards(0);
-	} else if(chest) {
-		// theres a chance these are backwards
-		auto big = static_cast<GJRewardItem*>(gsm->m_rewardItems->objectForKey(1));
-		auto small = static_cast<GJRewardItem*>(gsm->m_rewardItems->objectForKey(2));
-		if (big && small && (big->m_timeRemaining == 0 || small->m_timeRemaining == 0)) {
-			auto alert = CCSprite::createWithSpriteFrameName("exMark_001.png");
-			if (alert) {
-				alert->setScale(.6f);
-				alert->setID("alert");
-				alert->setPosition(CCPoint{35.f, 35.f});
-				chest->addChild(alert);
-			}
-		}
-	}
+        auto gsm = GameStatsManager::get();
+        if (gsm->m_rewardItems->count() == 0) {
+            GameLevelManager::get()->getGJRewards(0);
+        } else if (chest) {
+            // theres a chance these are backwards
+            auto *bigChest = typeinfo_cast<GJRewardItem *>(gsm->m_rewardItems->objectForKey(1));
+            auto *smallChest = typeinfo_cast<GJRewardItem *>(gsm->m_rewardItems->objectForKey(2));
+            if (bigChest && smallChest && (bigChest->m_timeRemaining == 0 || smallChest->m_timeRemaining == 0)) {
+                auto alert = CCSprite::createWithSpriteFrameName("exMark_001.png");
+                if (alert) {
+                    alert->setScale(.6f);
+                    alert->setID("alert");
+                    alert->setPosition(CCPoint{35.f, 35.f});
+                    chest->addChild(alert);
+                }
+            }
+        }
         addButton("chests", MenuLayer::onDaily, chest, .65f);
 
         auto quest = CCSprite::create("quests.png"_spr);
-	for (int i = 1; i < 4; i++) {
-		auto c = gsm->getChallenge(i);
-		if(c && c->m_canClaim) {
-			auto alert = CCSprite::createWithSpriteFrameName("exMark_001.png");
-			if (alert) {
-				alert->setScale(.75f);
-				alert->setID("alert");
-				alert->setPosition(CCPoint{40.f, 37.5f});
-				quest->addChild(alert);
-			}
-			break;
-		}
-	}
+        for (int i = 1; i < 4; i++) {
+            auto c = gsm->getChallenge(i);
+            if (c && c->m_canClaim) {
+                if (auto alert = CCSprite::createWithSpriteFrameName("exMark_001.png")) {
+                    alert->setScale(.75f);
+                    alert->setID("alert");
+                    alert->setPosition(CCPoint{40.f, 37.5f});
+                    quest->addChild(alert);
+                }
+                break;
+            }
+        }
         addButton("quests", RewardPause::onQuests, quest, .575f);
         auto treasure = CCSprite::createWithSpriteFrameName("chest03_small_001.png");
         addButton("treasure", RewardPause::onTreasureRoom, treasure, .95);
         auto pathId = gsm->m_activePath - 29;
         CCSprite *path;
         if (pathId > 0 && pathId < 11) {
-            auto p =  GJPathSprite::create(pathId);
+            auto p = GJPathSprite::create(pathId);
             p->updateState();
             path = p;
         } else {
             path = CCSprite::create("noPath.png"_spr);
         }
         addButton("paths", CreatorLayer::onPaths, path, .75f);
-	}
-	
-	void onQuests(CCObject* sender) {
-		auto layer = ChallengesPage::create();
-		layer->show();
-	}
+    }
 
-    void onTreasureRoom(CCObject* sender) {
+    void onQuests(CCObject *sender) {
+        auto layer = ChallengesPage::create();
+        layer->show();
+    }
+
+    void onTreasureRoom(CCObject *sender) {
         int count = GameStatsManager::get()->getStat("21");
         if (GameManager::get()->getUGV("5")) {
             auto layer = MiniTreasureRoom::create();
             layer->show();
         } else if (count < 5) {
             int needed = 5 - count;
-            auto dialog = DialogObject::create("The Keymaster", fmt::format("Collect <cy>{}</c> more <cg>key{}</c>,<d020>\nand I will let you pass.", needed, needed > 1 ? "s" : "").c_str(), 2, 1.0, false, ccWHITE);
+            auto dialog = DialogObject::create("The Keymaster", fmt::format("Collect <cy>{}</c> more <cg>key{}</c>,<d020>\nand I will let you pass.", needed, needed > 1 ? "s" : ""), 2, 1.0, false, ccWHITE);
             auto dialogLayer = DialogLayer::createDialogLayer(dialog, nullptr, 2);
             dialogLayer->setZOrder(9999);
             dialogLayer->animateInRandomSide();
@@ -119,55 +124,60 @@ class $modify(RewardPause, PauseLayer) {
             GameManager::get()->setUGV("5", true);
         }
     }
+
+    void sfxSliderChanged(CCObject* sender) {
+        PauseLayer::sfxSliderChanged(sender);
+        g_group->setVolume(FMODAudioEngine::get()->m_sfxVolume);
+    }
 };
 
 // indent hell
 class $modify(RewardsPage) {
-	void onClose(CCObject* sender) {
-		RewardsPage::onClose(sender);
-		if (auto pause = CCScene::get()->getChildByType<PauseLayer>(0)) {
-			if (auto btn = pause->getChildByIDRecursive("chests-button"_spr)) {
-				if (auto alert = btn->getChildByIDRecursive("alert")) {
-					auto gsm = GameStatsManager::get();
-					if (gsm->m_rewardItems->count() == 0) return;
-					// theres a chance these are backwards
-					auto big = static_cast<GJRewardItem*>(gsm->m_rewardItems->objectForKey(1));
-					auto small = static_cast<GJRewardItem*>(gsm->m_rewardItems->objectForKey(2));
-					if (big && small && big->m_timeRemaining > 0 && small->m_timeRemaining > 0) {
-						alert->removeFromParent();
-					}
-				}
-			}
-		}
-	}
+    void rewardsStatusFinished(int idk) {
+        RewardsPage::rewardsStatusFinished(idk);
+        if (m_leftOpen && m_rightOpen) {
+            if (auto pause = CCScene::get()->getChildByType<PauseLayer>(0)) {
+                if (auto btn = pause->getChildByIDRecursive("chests-button"_spr)) {
+                    if (auto alert = btn->getChildByIDRecursive("alert")) {
+                        alert->removeFromParent();
+                    }
+                }
+            }
+        }
+    }
 };
 
 class $modify(ChallengeNode) {
-	void onClaimReward(CCObject* sender) {
-		auto gsm = GameStatsManager::get();
-		if (auto pause = CCScene::get()->getChildByType<PauseLayer>(0)) {
-			if (auto btn = pause->getChildByIDRecursive("quests-button"_spr)) {
-				if (auto alert = btn->getChildByIDRecursive("alert")) {
-					for (int i = 1; i < 4; i++) {
-						auto c = gsm->getChallenge(i);
-						if(c && c->m_canClaim) return;
-					}
-					alert->removeFromParent();
-				}
-			}
-			auto pos = getPosition() + m_unkPoint;
-			if (this->m_challengesPage && this->m_challengeItem) {
-        			this->m_challengesPage->claimItem(this, this->m_challengeItem, pos);
-    			}
+    void onClaimReward(CCObject *sender) {
+        ChallengeNode::onClaimReward(sender);
+        auto gsm = GameStatsManager::get();
+        if (auto pause = CCScene::get()->getChildByType<PauseLayer>(0)) {
+            if (auto btn = pause->getChildByIDRecursive("quests-button"_spr)) {
+                if (auto alert = btn->getChildByIDRecursive("alert")) {
+                    for (int i = 1; i < 4; i++) {
+                        auto c = gsm->getChallenge(i);
+                        if (c && c->m_canClaim) return;
+                    }
+                    alert->removeFromParent();
+                }
+            }
+        }
+    }
+};
 
-			// play sfx here
-			
-			if (auto node = typeinfo_cast<CCMenuItem*>(sender)) {
-				node->setVisible(false);
-				node->setEnabled(false);
-			}
-		} else {
-			ChallengeNode::onClaimReward(sender);
-		}
-	}
+$on_mod(Loaded) {
+    auto system = FMODAudioEngine::get()->m_system;
+    system->createChannelGroup("SFX", &g_group);
+    g_group->setVolume(FMODAudioEngine::get()->m_sfxVolume);
+}
+
+class $modify(FMOD::System) {
+    FMOD_RESULT playSound(FMOD::Sound *sound, FMOD::ChannelGroup *channelgroup, bool paused, FMOD::Channel **channel) {
+        if (CCScene::get()->getChildByType<PauseLayer>(0)) {
+            if (channelgroup == FMODAudioEngine::get()->m_globalChannel) {
+                channelgroup = g_group;
+            }
+        }
+        return FMOD::System::playSound(sound, channelgroup, paused, channel);
+    }
 };
