@@ -1,6 +1,6 @@
 # 1.4.0
 ## "You ain’t heard nothin’ yet!" - Al Jolson
-- Now shows an exclamation mark when you completed quests or have available chests
+- Now shows an exclamation mark when you completed quests or have available daily chests
 - Sound effects now properly work!
 # 1.3.2
 - Fix mislabeled setting (thanks colon!)
