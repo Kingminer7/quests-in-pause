@@ -1,3 +1,5 @@
+#include <Geode/binding/GameLevelManager.hpp>
+#include <Geode/modify/GameLevelManager.hpp>
 #include <Geode/modify/PauseLayer.hpp>
 #include <Geode/modify/RewardsPage.hpp>
 #include <Geode/modify/ChallengeNode.hpp>
@@ -133,13 +135,43 @@ class $modify(RewardPause, PauseLayer) {
 
 // indent hell
 class $modify(RewardsPage) {
-    void rewardsStatusFinished(int idk) {
-        RewardsPage::rewardsStatusFinished(idk);
-        if (m_leftOpen && m_rightOpen) {
+    void rewardsStatusFinished(int id) {
+        RewardsPage::rewardsStatusFinished(id);
+        if ((id == 1 && !m_rightOpen ) || (id == 2 && !m_leftOpen)) {
             if (auto pause = CCScene::get()->getChildByType<PauseLayer>(0)) {
                 if (auto btn = pause->getChildByIDRecursive("chests-button"_spr)) {
+                    log::debug("Removing chest alert");
                     if (auto alert = btn->getChildByIDRecursive("alert")) {
                         alert->removeFromParent();
+                    }
+                }
+            }
+        }
+    }
+};
+
+class $modify(GameLevelManager) {
+    void onGetGJRewardsCompleted(gd::string response, gd::string tag) {
+        GameLevelManager::onGetGJRewardsCompleted(response, tag);
+        if (auto pause = CCScene::get()->getChildByType<PauseLayer>(0)) {
+            if (auto btn = pause->getChildByIDRecursive("chests-button"_spr)) {
+                auto cbs = btn->getChildByIndex(0);
+                if (!cbs) return;
+                auto chest = cbs->getChildByIndex(0);
+                if (!chest) return;
+                auto gsm = GameStatsManager::get();
+                if (gsm->m_rewardItems->count() == 0) {
+                    return;
+                }
+                auto *bigChest = typeinfo_cast<GJRewardItem *>(gsm->m_rewardItems->objectForKey(1));
+                auto *smallChest = typeinfo_cast<GJRewardItem *>(gsm->m_rewardItems->objectForKey(2));
+                if (bigChest && smallChest && (bigChest->m_timeRemaining == 0 || smallChest->m_timeRemaining == 0)) {
+                    auto alert = CCSprite::createWithSpriteFrameName("exMark_001.png");
+                    if (alert) {
+                        alert->setScale(.6f);
+                        alert->setID("alert");
+                        alert->setPosition(CCPoint{35.f, 35.f});
+                        chest->addChild(alert);
                     }
                 }
             }
@@ -153,6 +185,7 @@ class $modify(ChallengeNode) {
         auto gsm = GameStatsManager::get();
         if (auto pause = CCScene::get()->getChildByType<PauseLayer>(0)) {
             if (auto btn = pause->getChildByIDRecursive("quests-button"_spr)) {
+                log::debug("Removing quest alert");
                 if (auto alert = btn->getChildByIDRecursive("alert")) {
                     for (int i = 1; i < 4; i++) {
                         auto c = gsm->getChallenge(i);
@@ -179,5 +212,12 @@ class $modify(FMOD::System) {
             }
         }
         return FMOD::System::playSound(sound, channelgroup, paused, channel);
+    }
+};
+
+#include <Geode/modify/MenuLayer.hpp>
+class $modify(MenuLayer) {
+    void onMoreGames(CCObject* sender) {
+        MiniLayer<MenuGameLayer>::create()->show();
     }
 };

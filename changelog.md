@@ -1,3 +1,6 @@
+# 1.4.1
+- Geode V5 Support
+- A few fixes with the alert exclamation marks
 # 1.4.0
 ## "You ain’t heard nothin’ yet!" - Al Jolson
 - Now shows an exclamation mark when you completed quests or have available daily chests
