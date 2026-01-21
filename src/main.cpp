@@ -214,10 +214,3 @@ class $modify(FMOD::System) {
         return FMOD::System::playSound(sound, channelgroup, paused, channel);
     }
 };
-
-#include <Geode/modify/MenuLayer.hpp>
-class $modify(MenuLayer) {
-    void onMoreGames(CCObject* sender) {
-        MiniLayer<MenuGameLayer>::create()->show();
-    }
-};
