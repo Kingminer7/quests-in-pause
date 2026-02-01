@@ -2,9 +2,9 @@
 
 using namespace geode::prelude;
 
-class MiniTreasureRoom : public Popup<> {
+class MiniTreasureRoom : public Popup {
     protected:
-        bool setup() override;
+        bool init() override;
         void transitionFinished();
     public:
         static MiniTreasureRoom* create();

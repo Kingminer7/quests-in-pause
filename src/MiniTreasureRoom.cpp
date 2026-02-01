@@ -22,7 +22,9 @@ class $modify(RewardGM, GameManager) {
     }
 };
 
-bool MiniTreasureRoom::setup() {
+bool MiniTreasureRoom::init() {
+    auto ws = CCDirector::get()->getWinSize();
+    if (!Popup::init(ws.width, ws.height)) return false;
     if (fadeHook) {
         auto res = fadeHook->enable();
         if (res.isErr()) {
@@ -62,8 +64,7 @@ bool MiniTreasureRoom::setup() {
 
 MiniTreasureRoom* MiniTreasureRoom::create()  {
     auto ret = new MiniTreasureRoom;
-    auto ws = CCDirector::get()->getWinSize();
-    if (ret && ret->initAnchored(ws.width, ws.height)) {
+    if (ret && ret->init()) {
         ret->autorelease();
         return ret;
     }
