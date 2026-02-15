@@ -1,5 +1,5 @@
 {
-  "geode": "5.0.0-alpha.1",
+  "geode": "5.0.0-beta.1",
   "gd": {
     "win": "2.2081",
     "android": "2.2081",
@@ -29,33 +29,64 @@
     "geode.node-ids": "1.20.0"
   },
   "settings": {
+    "pause-title": {
+      "type": "title",
+      "nane": "Pause Menu"
+    },
+    "pause": {
+      "type": "bool",
+      "name": "Show in Pause Menu",
+      "description": "Adds either buttons or the popup to the pause menu.",
+      "default": true
+    },
+    "pause-popup": {
+      "type": "bool",
+      "name": "Use Popup",
+      "description": "Uses a popup rather than individual buttons.",
+      "default": false,
+      "enable-if": "pause"
+    },
     "chests": {
       "type":"string",
       "default": "On Left",
       "one-of": ["Off", "On Left", "On Right"],
       "name": "Chest Button",
-      "description": "Choose where the chest button will be placed."
+      "description": "Choose where the chest button will be placed in the pause menu.",
+      "enable-if": "pause && !pause-popup"
     },
     "quests": {
       "type":"string",
       "default": "On Right",
       "one-of": ["Off", "On Left", "On Right"],
       "name": "Quest Button",
-      "description": "Choose where the quest button will be placed."
+      "description": "Choose where the quest button will be placed.",
+      "enable-if": "pause && !pause-popup"
     },
     "paths": {
       "type":"string",
       "default": "On Left",
       "one-of": ["Off", "On Left", "On Right"],
       "name": "Path Button",
-      "description": "Choose where the path button will be placed."
+      "description": "Choose where the path button will be placed.",
+      "enable-if": "pause && !pause-popup"
     },
     "treasure": {
       "type":"string",
       "default": "On Left",
       "one-of": ["Off", "On Left", "On Right"],
       "name": "Treasure Room Button",
-      "description": "Choose where the treasure room button will be placed."
+      "description": "Choose where the treasure room button will be placed.",
+      "enable-if": "pause && !pause-popup"
+    },
+    "editor-title": {
+      "type": "title",
+      "name": "Editor Pause Menu"
+    },
+    "editor": {
+      "type": "bool",
+      "name": "Show in Editor Pause Menu",
+      "description": "Adds a button for the popup to the Editor Pause Menu. Due to limited space, individual buttons are not supported.",
+      "default": false
     }
   }
 }
