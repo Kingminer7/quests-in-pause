@@ -9,7 +9,7 @@ else()
 endif()
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 
-project(QuestsinPauseMenu VERSION 1.3.0)
+project(QuestsinPauseMenu VERSION 1.5.0)
 
 file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS src/*.cpp)
 

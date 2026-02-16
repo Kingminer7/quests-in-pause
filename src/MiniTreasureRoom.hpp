@@ -1,15 +1,12 @@
 #pragma once
 
+#include "MiniLayer.hpp"
+
 using namespace geode::prelude;
 
-class MiniTreasureRoom : public Popup {
-    protected:
-        bool init() override;
-        void transitionFinished();
-    public:
-        static MiniTreasureRoom* create();
-        void onClose(CCObject* sender) override;
-        void show() override;
-
-        SecretRewardsLayer* m_rewardLayer;
+class MiniTreasureRoom : public MiniLayer<SecretRewardsLayer> {
+protected:
+    bool init() override;
+public:
+    static MiniTreasureRoom* create();
 };

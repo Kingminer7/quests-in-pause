@@ -8,7 +8,7 @@
   },
   "id": "km7dev.quests_in_pause_menu",
   "name": "Rewards in Pause Menu",
-  "version": "v1.4.0",
+  "version": "v1.5.0",
   "developer": "km7dev",
   "description": "Adds reward access to the pause menu",
   "resources": {
@@ -17,7 +17,7 @@
     ]
   },
   "links": {
-	  "source": "https://github.com/kingminer7/quests-in-pause",
+    "source": "https://github.com/kingminer7/quests-in-pause",
     "community": "https://discord.gg/Vj5Mcennph",
     "homepage": "https://km7dev.tech"
   },
@@ -26,7 +26,7 @@
     "url": "https://discord.gg/Vj5Mcennph"
   },
   "dependencies": {
-    "geode.node-ids": "1.20.0"
+    "geode.node-ids": ">=1.22.0"
   },
   "settings": {
     "pause-title": {

@@ -23,8 +23,6 @@ class $modify(RewardGM, GameManager) {
 };
 
 bool MiniTreasureRoom::init() {
-    auto ws = CCDirector::get()->getWinSize();
-    if (!Popup::init(ws.width, ws.height)) return false;
     if (fadeHook) {
         auto res = fadeHook->enable();
         if (res.isErr()) {
@@ -33,30 +31,24 @@ bool MiniTreasureRoom::init() {
     } else {
         log::warn("Hook not found!");
     }
-    m_rewardLayer = SecretRewardsLayer::create(false);
+    auto layer = SecretRewardsLayer::create(false);
     if (fadeHook) {
         auto res = fadeHook->disable();
         if (res.isErr()) {
             log::warn("Failed to disable GameManager::fadeInMusic - {}", res.unwrapErr());
         }
     }
-    m_mainLayer->setVisible(false);
-    addChild(m_rewardLayer);
-    setID("MiniTreasureRoom"_spr);
-    setOpacity(0);
+    log::info("{}", layer->m_backSprite);
+    if (!MiniLayer::init(layer, layer->getChildByID("exit-menu")->getChildByType<CCMenuItemSpriteExtra*>(0))) return false;
 
-    if (auto closeBtn = m_rewardLayer->getChildByID("exit-menu")->getChildByType<CCMenuItemSpriteExtra*>(0)) {
-        closeBtn->m_pfnSelector = menu_selector(MiniTreasureRoom::onClose);
-        closeBtn->m_pListener = this;
-    }
-    auto bs = m_rewardLayer->m_mainScrollLayer;
+    const auto bs = layer->m_mainScrollLayer;
 
-    auto page = static_cast<CCLayer*>(bs->m_pages->objectAtIndex(4));
+    const auto page = typeinfo_cast<CCLayer*>(bs->m_pages->objectAtIndex(4));
     bs->m_pages->removeObjectAtIndex(4);
     page->removeFromParent();
     bs->updatePages();
     bs->updateDots(0);
-    static_cast<CCNode*>(bs->m_dots->objectAtIndex(4))->removeFromParent();
+    typeinfo_cast<CCNode*>(bs->m_dots->objectAtIndex(4))->removeFromParent();
     bs->m_dots->removeObjectAtIndex(4);
 
     return true;
@@ -64,32 +56,6 @@ bool MiniTreasureRoom::init() {
 
 MiniTreasureRoom* MiniTreasureRoom::create()  {
     auto ret = new MiniTreasureRoom;
-    if (ret && ret->init()) {
-        ret->autorelease();
-        return ret;
-    }
-    delete ret;
-    return nullptr;
-}
-
-void MiniTreasureRoom::onClose(CCObject* sender) {
-    if (!m_rewardLayer->m_inMainLayer) return m_rewardLayer->onBack(sender);
-    m_rewardLayer->stopAllActions();
-    m_rewardLayer->runAction(CCSequence::createWithTwoActions(CCMoveTo::create(0.3, {0, CCDirector::sharedDirector()->getWinSize().height + 5}), CCCallFunc::create(this, callfunc_selector(MiniTreasureRoom::transitionFinished))));
-}
-
-void MiniTreasureRoom::transitionFinished() {
-    removeFromParent();
-}
-
-void MiniTreasureRoom::show() {
-    if (m_noElasticity) return Popup::show();
-    auto dir = CCDirector::sharedDirector();
-    m_noElasticity = true;
-    Popup::show();
-    m_mainLayer->setVisible(false);
-    m_noElasticity = false;
-    m_rewardLayer->setPosition({0, dir->getWinSize().height + 5});
-    m_rewardLayer->stopAllActions();
-    m_rewardLayer->runAction(CCEaseBounceOut::create(CCMoveTo::create(0.5, {0, 0})));
+    if (ret->init()) return ret->autorelease(), ret;
+    return delete ret, nullptr;
 }

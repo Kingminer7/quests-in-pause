@@ -1,9 +1,10 @@
-#include <Geode/binding/CCMenuItemSpriteExtra.hpp>
+#pragma once
+
 #include <Geode/ui/Popup.hpp>
 
 class RewardsPopup : public geode::Popup {
-    protected:
-	bool init(CCMenuItemSpriteExtra* btn);
-    public:
-	static RewardsPopup* create(CCMenuItemSpriteExtra* btn);
+protected:
+	bool init() override;
+public:
+	static RewardsPopup* create();
 };

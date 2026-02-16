@@ -1,6 +1,7 @@
 #include <Geode/binding/GameLevelManager.hpp>
 #include <Geode/modify/GameLevelManager.hpp>
 #include <Geode/modify/PauseLayer.hpp>
+#include <Geode/modify/EditorPauseLayer.hpp>
 #include <Geode/modify/RewardsPage.hpp>
 #include <Geode/modify/ChallengeNode.hpp>
 #include <Geode/modify/System.hpp>
@@ -8,6 +9,7 @@
 #include <Geode/binding/MenuLayer.hpp>
 #include <Geode/binding/CCMenuItemSpriteExtra.hpp>
 #include <Geode/ui/BasedButtonSprite.hpp>
+
 #include "MiniTreasureRoom.hpp"
 #include "RewardsPopup.hpp"
 
@@ -40,19 +42,19 @@ static FMOD::ChannelGroup* g_group;
 class $modify(RewardPause, PauseLayer) {
     void customSetup() {
         PauseLayer::customSetup();
-	if (!Mod::get()->getSettingValue<bool>("pause")) return;
-	if (Mod::get()->getSettingValue<bool>("pause-popup")) {
-	    auto circle = CircleButtonSprite::createWithSprite("rewards.png"_spr, .85f, CircleBaseColor::Green, CircleBaseSize::MediumAlt);
-	    circle->setScale(.6f);
-	    auto btn = CCMenuItemExt::createSpriteExtra(circle, [](auto btn){
-		RewardsPopup::create(btn)->show();
-	    });
-	    btn->setID("rewards-button"_spr);
-	    auto menu = getChildByID("left-button-menu");
-	    menu->addChild(btn);
-	    menu->updateLayout();
-	    return;
-	}
+        if (!Mod::get()->getSettingValue<bool>("pause")) return;
+        if (Mod::get()->getSettingValue<bool>("pause-popup")) {
+            auto circle = CircleButtonSprite::createWithSprite("rewards.png"_spr, .85f, CircleBaseColor::Green, CircleBaseSize::MediumAlt);
+            circle->setScale(.6f);
+            auto btn = CCMenuItemExt::createSpriteExtra(circle, [](auto btn){
+                RewardsPopup::create()->show();
+            });
+            btn->setID("rewards-button"_spr);
+            auto menu = getChildByID("left-button-menu");
+            menu->addChild(btn);
+            menu->updateLayout();
+            return;
+        }
         g_group->setVolume(FMODAudioEngine::get()->m_sfxVolume);
 
         auto rightMenu = this->getChildByID("right-button-menu");
@@ -173,6 +175,7 @@ class $modify(GameLevelManager) {
                 if (!cbs) return;
                 auto chest = cbs->getChildByIndex(0);
                 if (!chest) return;
+                if (chest->getChildByID("alert")) return;
                 auto gsm = GameStatsManager::get();
                 if (gsm->m_rewardItems->count() == 0) {
                     return;
@@ -209,6 +212,24 @@ class $modify(ChallengeNode) {
                 }
             }
         }
+    }
+};
+
+class $modify(RewardEditorPause, EditorPauseLayer) {
+    bool init(LevelEditorLayer* editor) {
+        if (!EditorPauseLayer::init(editor)) return false;
+        if (Mod::get()->getSettingValue<bool>("editor")) {
+            auto circle = CircleButtonSprite::createWithSprite("rewards.png"_spr, .85f, CircleBaseColor::Green, CircleBaseSize::Medium);
+            circle->setScale(.85f);
+            auto btn = CCMenuItemExt::createSpriteExtra(circle, [](auto btn){
+                RewardsPopup::create()->show();
+            });
+            btn->setID("rewards-button"_spr);
+            auto menu = getChildByID("guidelines-menu");
+            menu->addChild(btn);
+            menu->updateLayout();
+        }
+        return true;
     }
 };
 
