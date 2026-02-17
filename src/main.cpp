@@ -1,5 +1,5 @@
 #include <Geode/binding/GameLevelManager.hpp>
-#include <Geode/modify/GameLevelManager.hpp>
+#include <Geode/modify/GameStatsManager.hpp>
 #include <Geode/modify/PauseLayer.hpp>
 #include <Geode/modify/EditorPauseLayer.hpp>
 #include <Geode/modify/RewardsPage.hpp>
@@ -9,9 +9,10 @@
 #include <Geode/binding/MenuLayer.hpp>
 #include <Geode/binding/CCMenuItemSpriteExtra.hpp>
 #include <Geode/ui/BasedButtonSprite.hpp>
+#include <utility>
 
-#include "MiniTreasureRoom.hpp"
-#include "RewardsPopup.hpp"
+#include "ui/MiniTreasureRoom.hpp"
+#include "ui/RewardsPopup.hpp"
 
 using namespace geode::prelude;
 
@@ -166,9 +167,9 @@ class $modify(RewardsPage) {
     }
 };
 
-class $modify(GameLevelManager) {
-    void onGetGJRewardsCompleted(gd::string response, gd::string tag) {
-        GameLevelManager::onGetGJRewardsCompleted(response, tag);
+class $modify(GameStatsManager) {
+    void storeRewardState(GJRewardType type, int id, int remaining, gd::string str) {
+        GameStatsManager::storeRewardState(type, id, remaining, std::move(str));
         if (auto pause = CCScene::get()->getChildByType<PauseLayer>(0)) {
             if (auto btn = pause->getChildByIDRecursive("chests-button"_spr)) {
                 auto cbs = btn->getChildByIndex(0);
@@ -176,15 +177,13 @@ class $modify(GameLevelManager) {
                 auto chest = cbs->getChildByIndex(0);
                 if (!chest) return;
                 if (chest->getChildByID("alert")) return;
-                auto gsm = GameStatsManager::get();
-                if (gsm->m_rewardItems->count() == 0) {
+                if (m_rewardItems->count() == 0) {
                     return;
                 }
-                auto *bigChest = typeinfo_cast<GJRewardItem *>(gsm->m_rewardItems->objectForKey(1));
-                auto *smallChest = typeinfo_cast<GJRewardItem *>(gsm->m_rewardItems->objectForKey(2));
+                auto *bigChest = typeinfo_cast<GJRewardItem *>(m_rewardItems->objectForKey(1));
+                auto *smallChest = typeinfo_cast<GJRewardItem *>(m_rewardItems->objectForKey(2));
                 if (bigChest && smallChest && (bigChest->m_timeRemaining == 0 || smallChest->m_timeRemaining == 0)) {
-                    auto alert = CCSprite::createWithSpriteFrameName("exMark_001.png");
-                    if (alert) {
+                    if (auto alert = CCSprite::createWithSpriteFrameName("exMark_001.png")) {
                         alert->setScale(.6f);
                         alert->setID("alert");
                         alert->setPosition(CCPoint{35.f, 35.f});

@@ -1,3 +1,7 @@
+# 1.5.1
+
+- Fix a crash on Apple devices
+
 # 1.5.0
 
 - Update to Geode v5 / GD 2.2081

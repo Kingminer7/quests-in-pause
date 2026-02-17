@@ -57,7 +57,6 @@ jobs:
         with:
           bindings: geode-sdk/bindings
           bindings-ref: main
-          sdk: nightly
           combine: true
           build-config: ${{ !(github.event.inputs.build_type == 'release' || (github.event_name == 'push' && startsWith(github.event.head_commit.message, '[rel]'))) && (matrix.config.target == 'Win64' && 'RelWithDebInfo' || 'Debug') || 'Release' }}
           export-pdb: true
