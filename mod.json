@@ -17,13 +17,7 @@
     ]
   },
   "links": {
-    "source": "https://github.com/kingminer7/quests-in-pause",
-    "community": "https://discord.gg/Vj5Mcennph",
-    "homepage": "https://km7dev.tech"
-  },
-  "issues": {
-    "info": "Report issues in my Discord server.",
-    "url": "https://discord.gg/Vj5Mcennph"
+    "source": "https://github.com/kingminer7/quests-in-pause"
   },
   "dependencies": {
     "geode.node-ids": ">=1.22.0"
@@ -31,7 +25,7 @@
   "settings": {
     "pause-title": {
       "type": "title",
-      "nane": "Pause Menu"
+      "name": "Pause Menu"
     },
     "pause": {
       "type": "bool",
