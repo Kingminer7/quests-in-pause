@@ -1,3 +1,7 @@
+# 1.5.2
+
+- Temporarily remove the alert on quests due to a crash
+
 # 1.5.1
 
 - Fix a crash on Apple devices
