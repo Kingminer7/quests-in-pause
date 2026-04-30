@@ -63,22 +63,23 @@ class $modify(RewardPause, PauseLayer) {
 
         auto chest = CCSprite::createWithSpriteFrameName("GJ_dailyRewardBtn_001.png");
         auto gsm = GameStatsManager::get();
-        // if (gsm->m_rewardItems->count() == 0) {
-        //     GameLevelManager::get()->getGJRewards(0);
-        // } else if (chest) {
-        //     // theres a chance these are backwards
-        //     auto *bigChest = typeinfo_cast<GJRewardItem *>(gsm->m_rewardItems->objectForKey(1));
-        //     auto *smallChest = typeinfo_cast<GJRewardItem *>(gsm->m_rewardItems->objectForKey(2));
-        //     if (bigChest && smallChest && (bigChest->m_timeRemaining == 0 || smallChest->m_timeRemaining == 0)) {
-        //         auto alert = CCSprite::createWithSpriteFrameName("exMark_001.png");
-        //         if (alert) {
-        //             alert->setScale(.6f);
-        //             alert->setID("alert");
-        //             alert->setPosition(CCPoint{35.f, 35.f});
-        //             chest->addChild(alert);
-        //         }
-        //     }
-        // }
+        if (gsm->m_rewardItems->count() == 0) {
+            GameLevelManager::get()->m_GJRewardDelegate = nullptr;
+            GameLevelManager::get()->getGJRewards(0);
+        } else if (chest) {
+            // theres a chance these are backwards
+            auto *bigChest = typeinfo_cast<GJRewardItem *>(gsm->m_rewardItems->objectForKey(1));
+            auto *smallChest = typeinfo_cast<GJRewardItem *>(gsm->m_rewardItems->objectForKey(2));
+            if (bigChest && smallChest && (bigChest->m_timeRemaining == 0 || smallChest->m_timeRemaining == 0)) {
+                auto alert = CCSprite::createWithSpriteFrameName("exMark_001.png");
+                if (alert) {
+                    alert->setScale(.6f);
+                    alert->setID("alert");
+                    alert->setPosition(CCPoint{35.f, 35.f});
+                    chest->addChild(alert);
+                }
+            }
+        }
         addButton("chests", MenuLayer::onDaily, chest, .65f);
 
         auto quest = CCSprite::create("quests.png"_spr);
@@ -151,49 +152,49 @@ class $modify(RewardPause, PauseLayer) {
 };
 
 // indent hell
-// class $modify(RewardsPage) {
-//     void rewardsStatusFinished(int id) {
-//         RewardsPage::rewardsStatusFinished(id);
-//         if ((id == 1 && !m_rightOpen ) || (id == 2 && !m_leftOpen)) {
-//             if (auto pause = CCScene::get()->getChildByType<PauseLayer>(0)) {
-//                 if (auto btn = pause->getChildByIDRecursive("chests-button"_spr)) {
-//                     log::debug("Removing chest alert");
-//                     if (auto alert = btn->getChildByIDRecursive("alert")) {
-//                         alert->removeFromParent();
-//                     }
-//                 }
-//             }
-//         }
-//     }
-// };
+class $modify(RewardsPage) {
+    void rewardsStatusFinished(int id) {
+        RewardsPage::rewardsStatusFinished(id);
+        if ((id == 1 && !m_rightOpen ) || (id == 2 && !m_leftOpen)) {
+            if (auto pause = CCScene::get()->getChildByType<PauseLayer>(0)) {
+                if (auto btn = pause->getChildByIDRecursive("chests-button"_spr)) {
+                    log::debug("Removing chest alert");
+                    if (auto alert = btn->getChildByIDRecursive("alert")) {
+                        alert->removeFromParent();
+                    }
+                }
+            }
+        }
+    }
+};
 
-// class $modify(GameStatsManager) {
-//     void storeRewardState(GJRewardType type, int id, int remaining, gd::string str) {
-//         GameStatsManager::storeRewardState(type, id, remaining, std::move(str));
-//         if (auto pause = CCScene::get()->getChildByType<PauseLayer>(0)) {
-//             if (auto btn = pause->getChildByIDRecursive("chests-button"_spr)) {
-//                 auto cbs = btn->getChildByIndex(0);
-//                 if (!cbs) return;
-//                 auto chest = cbs->getChildByIndex(0);
-//                 if (!chest) return;
-//                 if (chest->getChildByID("alert")) return;
-//                 if (m_rewardItems->count() == 0) {
-//                     return;
-//                 }
-//                 auto *bigChest = typeinfo_cast<GJRewardItem *>(m_rewardItems->objectForKey(1));
-//                 auto *smallChest = typeinfo_cast<GJRewardItem *>(m_rewardItems->objectForKey(2));
-//                 if (bigChest && smallChest && (bigChest->m_timeRemaining == 0 || smallChest->m_timeRemaining == 0)) {
-//                     if (auto alert = CCSprite::createWithSpriteFrameName("exMark_001.png")) {
-//                         alert->setScale(.6f);
-//                         alert->setID("alert");
-//                         alert->setPosition(CCPoint{35.f, 35.f});
-//                         chest->addChild(alert);
-//                     }
-//                 }
-//             }
-//         }
-//     }
-// };
+class $modify(GameStatsManager) {
+    void storeRewardState(GJRewardType type, int id, int remaining, gd::string str) {
+        GameStatsManager::storeRewardState(type, id, remaining, std::move(str));
+        if (auto pause = CCScene::get()->getChildByType<PauseLayer>(0)) {
+            if (auto btn = pause->getChildByIDRecursive("chests-button"_spr)) {
+                auto cbs = btn->getChildByIndex(0);
+                if (!cbs) return;
+                auto chest = cbs->getChildByIndex(0);
+                if (!chest) return;
+                if (chest->getChildByID("alert")) return;
+                if (m_rewardItems->count() == 0) {
+                    return;
+                }
+                auto *bigChest = typeinfo_cast<GJRewardItem *>(m_rewardItems->objectForKey(1));
+                auto *smallChest = typeinfo_cast<GJRewardItem *>(m_rewardItems->objectForKey(2));
+                if (bigChest && smallChest && (bigChest->m_timeRemaining == 0 || smallChest->m_timeRemaining == 0)) {
+                    if (auto alert = CCSprite::createWithSpriteFrameName("exMark_001.png")) {
+                        alert->setScale(.6f);
+                        alert->setID("alert");
+                        alert->setPosition(CCPoint{35.f, 35.f});
+                        chest->addChild(alert);
+                    }
+                }
+            }
+        }
+    }
+};
 
 class $modify(ChallengeNode) {
     void onClaimReward(CCObject *sender) {
