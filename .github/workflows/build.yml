@@ -169,3 +169,19 @@ jobs:
             ./artifacts/build-output/*.geode
             ./artifacts/build-output/*.pdb
             ./artifacts/build-output/*.sym
+
+      - name: Create Release (Codeberg)
+        uses: kingminer7/forgejo-release@main
+        with:
+          direction: upload
+          url: https://codeberg.org
+          token: ${{ secrets.CODEBERG_TOKEN }}
+          repo: km7dev/rewards-in-pause
+
+          title: ${{ env.MOD_VERSION }}
+          release-notes: ${{ env.CHANGELOG }}
+          sha: ${{ github.sha }}
+          tag: ${{MOD_VERSION}}
+          prerelease: false
+          override: false
+          release-dir: ./artifacts/build-output/
