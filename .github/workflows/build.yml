@@ -181,7 +181,7 @@ jobs:
           title: ${{ env.MOD_VERSION }}
           release-notes: ${{ env.CHANGELOG }}
           sha: ${{ github.sha }}
-          tag: ${{MOD_VERSION}}
+          tag: ${{ env.MOD_VERSION }}
           prerelease: false
           override: false
           release-dir: ./artifacts/build-output/
