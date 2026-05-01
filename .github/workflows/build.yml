@@ -24,28 +24,28 @@ jobs:
 
       matrix:
         config:
-          - name: Windows
-            # this does linux to windows cross comp
-            os: ubuntu-latest
-            target: Win64
-            # if you don't want cross comp replace it with this
-            # os: windows-latest
-            # target isnt necessary if os is windows
+          # - name: Windows
+          #   # this does linux to windows cross comp
+          #   os: ubuntu-latest
+          #   target: Win64
+          #   # if you don't want cross comp replace it with this
+          #   # os: windows-latest
+          #   # target isnt necessary if os is windows
 
-          - name: macOS
-            os: macos-latest
+          # - name: macOS
+          #   os: macos-latest
 
-          - name: Android32
-            os: ubuntu-latest
-            target: Android32
+          # - name: Android32
+          #   os: ubuntu-latest
+          #   target: Android32
 
           - name: Android64
             os: ubuntu-latest
             target: Android64
 
-          - name: iOS
-            os: macos-latest
-            target: iOS
+          # - name: iOS
+          #   os: macos-latest
+          #   target: iOS
 
     name: ${{ matrix.config.name }}
     runs-on: ${{ matrix.config.os }}
@@ -105,7 +105,7 @@ jobs:
             ./artifacts/build-output/*.sym
             
       - name: Create Nightly Release (Codeberg)
-        uses: actions/forgejo-release@v2.11.1
+        uses: kingminer7/forgejo-release@main
         with:
           direction: upload
           url: https://codeberg.org
