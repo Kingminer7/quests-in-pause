@@ -98,11 +98,26 @@ jobs:
           tag_name: nightly
           name: 'Development Release'
           body: |
-            Development release for commit ${{ github.sha }}. Built in RelWithDebInfo.
+            Development release for commit ${{ github.sha }}.
           files: |
             ./artifacts/build-output/*.geode
             ./artifacts/build-output/*.pdb
             ./artifacts/build-output/*.sym
+            
+      - name: Create Nightly Release (Codeberg)
+        uses: actions/forgejo-release@v2.11.1
+        with:
+          direction: upload
+          url: https://codeberg.org
+          token: ${{ secrets.CODEBERG_TOKEN }}
+          repo: km7dev/rewards-in-pause
+
+          title: Nightly Release
+          release-notes: Development release for commit ${{ github.sha }}.
+          sha: ${{ github.sha }}
+          tag: v1.0.0
+          prerelease: true
+          release-dir: ./artifacts/build-output/
 
   release:
     name: Create Draft Release
