@@ -115,8 +115,9 @@ jobs:
           title: Nightly Release
           release-notes: Development release for commit ${{ github.sha }}.
           sha: ${{ github.sha }}
-          tag: v1.0.0
+          tag: nightly
           prerelease: true
+          override: true
           release-dir: ./artifacts/build-output/
 
   release:
