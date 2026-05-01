@@ -17,7 +17,7 @@
     ]
   },
   "links": {
-    "source": "https://github.com/kingminer7/quests-in-pause"
+    "source": "https://codeberg.org/km7dev/rewards-in-pause"
   },
   "dependencies": {
     "geode.node-ids": ">=1.22.0"
