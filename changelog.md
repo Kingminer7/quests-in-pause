@@ -1,6 +1,7 @@
 # 1.5.2
 
 - Probably fix a crash
+- Move source to codeberg
 
 # 1.5.1
 
