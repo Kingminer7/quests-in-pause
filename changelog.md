@@ -1,3 +1,11 @@
+# 1.6.0
+
+- Fix a crash caused by pressing escape while the treasure room is closing
+- Add back the shops to the pause menu treasure room
+  - There is built in support for [Jam](mod:zilko.jam).
+- Disable dragging the treasure room and shops with [Draggable Popups](mod:undefined0.draggable-popups).
+- Add an option for transparent backgrounds
+
 # 1.5.2
 
 - Probably fix a crash

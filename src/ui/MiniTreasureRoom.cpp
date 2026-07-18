@@ -1,57 +1,56 @@
 #include "MiniTreasureRoom.hpp"
-#include <Geode/modify/GameManager.hpp>
 
-// This weird system is to stop the treasure room loop from overwriting the level's song
-
-Hook* fadeHook = nullptr;
-
-class $modify(RewardGM, GameManager) {
-    static void onModify(auto& self) {
-        if (auto h = self.getHook("GameManager::fadeInMusic")) {
-            fadeHook = h.unwrap();
-            fadeHook->setAutoEnable(false);
-            auto res = fadeHook->disable();
-            if (res.isErr()) {
-                log::warn("Failed to disable GameManager::fadeInMusic - {}", res.unwrapErr());
-            }
-        }
-    }
-
-    void fadeInMusic(gd::string p0) {
-        
-    }
-};
+#include "MiniShopLayer.hpp"
+#include "../Utils.hpp"
 
 bool MiniTreasureRoom::init() {
-    if (fadeHook) {
-        auto res = fadeHook->enable();
-        if (res.isErr()) {
-            log::warn("Failed to enable GameManager::fadeInMusic - {}", res.unwrapErr());
-        }
-    } else {
-        log::warn("Hook not found!");
-    }
+    toggleGMFadeHook(true);
     auto layer = SecretRewardsLayer::create(false);
-    if (fadeHook) {
-        auto res = fadeHook->disable();
-        if (res.isErr()) {
-            log::warn("Failed to disable GameManager::fadeInMusic - {}", res.unwrapErr());
+    toggleGMFadeHook(false);
+    if (!MiniLayer::init(layer, layer->getChildByID("exit-menu")->getChildByType<CCMenuItemSpriteExtra*>(0))) return false;
+    addBackgroundNode(layer->getChildByID("background"));
+
+    auto sm = layer->querySelector("main-contents > scroll-layer > pages > page5 > store-menu");
+    if (sm) {
+        #define replaceShop(whose) \
+        if (auto whose = typeinfo_cast<CCMenuItemSpriteExtra*>(sm->getChildByID(#whose"-shop"))) { \
+            whose->m_pListener = this; \
+            whose->m_pfnSelector = menu_selector(MiniTreasureRoom::interceptedShopBtn); \
+        } else { \
+            log::error("Could not find shop {}!", #whose); \
+        }
+
+        replaceShop(scratch);
+        replaceShop(creator);
+        replaceShop(mechanic);
+        replaceShop(diamond);
+
+        if (auto jam = typeinfo_cast<CCMenuItemSpriteExtra*>(sm->getChildByID("zilko.jam/jam-market-button"))) {
+            m_jamListener = jam->m_pListener;
+            m_jamSelector = jam->m_pfnSelector;
+            jam->m_pListener = this;
+            jam->m_pfnSelector = menu_selector(MiniTreasureRoom::interceptedJamBtn);
         }
     }
-    log::info("{}", layer->m_backSprite);
-    if (!MiniLayer::init(layer, layer->getChildByID("exit-menu")->getChildByType<CCMenuItemSpriteExtra*>(0))) return false;
-
-    const auto bs = layer->m_mainScrollLayer;
-
-    const auto page = typeinfo_cast<CCLayer*>(bs->m_pages->objectAtIndex(4));
-    bs->m_pages->removeObjectAtIndex(4);
-    page->removeFromParent();
-    bs->updatePages();
-    bs->updateDots(0);
-    typeinfo_cast<CCNode*>(bs->m_dots->objectAtIndex(4))->removeFromParent();
-    bs->m_dots->removeObjectAtIndex(4);
 
     return true;
+}
+
+void MiniTreasureRoom::onClose(CCObject* sender) {
+    if (!m_layer->m_inMainLayer) return m_layer->onBack(sender);
+    MiniLayer::onClose(sender);
+}
+
+void MiniTreasureRoom::interceptedShopBtn(CCObject* sender) {
+    MiniShopLayer::create(static_cast<ShopType>(sender->getTag()))->show();
+}
+
+void MiniTreasureRoom::interceptedJamBtn(CCObject* sender) {
+    auto shop = stealLayer<JamMarketLayer>([this] {
+        (m_jamListener->*m_jamSelector)(nullptr);
+    });
+    if (!shop) return;
+    MiniJamShopLayer::create(shop)->show();
 }
 
 MiniTreasureRoom* MiniTreasureRoom::create()  {
