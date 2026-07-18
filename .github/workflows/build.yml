@@ -90,19 +90,19 @@ jobs:
         with:
           path: './artifacts/'
 
-      - name: Create Nightly Release
-        uses: andelf/nightly-release@main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: nightly
-          name: 'Development Release'
-          body: |
-            Development release for commit ${{ github.sha }}.
-          files: |
-            ./artifacts/build-output/*.geode
-            ./artifacts/build-output/*.pdb
-            ./artifacts/build-output/*.sym
+#      - name: Create Nightly Release
+#        uses: andelf/nightly-release@main
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        with:
+#          tag_name: nightly
+#          name: 'Development Release'
+#          body: |
+#            Development release for commit ${{ github.sha }}.
+#          files: |
+#            ./artifacts/build-output/*.geode
+#            ./artifacts/build-output/*.pdb
+#            ./artifacts/build-output/*.sym
             
       - name: Create Nightly Release (Codeberg)
         uses: kingminer7/forgejo-release@main
@@ -155,20 +155,20 @@ jobs:
           echo "$CHANGELOG_CONTENT" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
-      - name: Create Draft Release
-        uses: softprops/action-gh-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ env.MOD_VERSION }}
-          name: ${{ env.MOD_VERSION }}
-          body: |
-            ${{ env.CHANGELOG }}
-          draft: false
-          files: |
-            ./artifacts/build-output/*.geode
-            ./artifacts/build-output/*.pdb
-            ./artifacts/build-output/*.sym
+#      - name: Create Draft Release
+#        uses: softprops/action-gh-release@v1
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        with:
+#          tag_name: ${{ env.MOD_VERSION }}
+#          name: ${{ env.MOD_VERSION }}
+#          body: |
+#            ${{ env.CHANGELOG }}
+#          draft: false
+#          files: |
+#            ./artifacts/build-output/*.geode
+#            ./artifacts/build-output/*.pdb
+#            ./artifacts/build-output/*.sym
 
       - name: Create Release (Codeberg)
         uses: kingminer7/forgejo-release@main
