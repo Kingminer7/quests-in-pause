@@ -33,3 +33,42 @@ geode::Ref<T> stealLayer(geode::Function<void()> func, bool music = false) {
     stolen->removeFromParentAndCleanup(false);
     return std::move(stolen);
 }
+
+struct Intercepter : cocos2d::CCObject {
+    using Callback = geode::Function<void(Intercepter* self, CCObject* sender)>;
+    Callback callback;
+
+    void callOriginal(CCObject* sender) {
+        (origListener->*origSel)(sender);
+    }
+
+    void execute(CCObject* sender) {
+        if (callback) callback(this, sender);
+    }
+
+    static Intercepter* create(cocos2d::CCMenuItem* orig, Callback callback) {
+        auto ret = new Intercepter(orig, std::move(callback));
+        ret->autorelease();
+        return ret;
+    }
+
+protected:
+    Intercepter(cocos2d::CCMenuItem* orig, Callback callback) {
+        this->callback = std::move(callback);
+        this->origListener = orig->m_pListener;
+        this->origSel = orig->m_pfnSelector;
+        orig->m_pListener = this;
+        orig->m_pfnSelector = menu_selector(Intercepter::execute);
+    }
+
+    CCObject* origListener;
+    cocos2d::SEL_MenuHandler origSel;
+};
+
+CCMenuItemSpriteExtra* createQuestButton(bool alt = false);
+CCMenuItemSpriteExtra* createTreasureButton(cocos2d::CCNode* dialogParent, bool alt = false);
+CCMenuItemSpriteExtra* createDailyButton(bool alt = false);
+CCMenuItemSpriteExtra* createPathButton(bool alt = false);
+
+bool checkChests();
+bool checkQuests();

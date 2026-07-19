@@ -1,3 +1,8 @@
+# 1.6.1
+
+- Prevent opening BetterInfo's Chest History in pause menu.
+- Internal changes
+
 # 1.6.0
 
 - Fix a crash caused by pressing escape while the treasure room is closing

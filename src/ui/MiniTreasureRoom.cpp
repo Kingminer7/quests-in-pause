@@ -1,6 +1,7 @@
 #include "MiniTreasureRoom.hpp"
 
 #include "MiniShopLayer.hpp"
+#include "ModLayers.hpp"
 #include "../Utils.hpp"
 
 bool MiniTreasureRoom::init() {
@@ -14,8 +15,9 @@ bool MiniTreasureRoom::init() {
     if (sm) {
         #define replaceShop(whose) \
         if (auto whose = typeinfo_cast<CCMenuItemSpriteExtra*>(sm->getChildByID(#whose"-shop"))) { \
-            whose->m_pListener = this; \
-            whose->m_pfnSelector = menu_selector(MiniTreasureRoom::interceptedShopBtn); \
+            whose->setUserObject("intercepter"_spr, Intercepter::create(whose, [](Intercepter* inter, CCObject* sender) {  \
+                MiniShopLayer::create(static_cast<ShopType>(sender->getTag()))->show(); \
+            })); \
         } else { \
             log::error("Could not find shop {}!", #whose); \
         }
@@ -26,10 +28,13 @@ bool MiniTreasureRoom::init() {
         replaceShop(diamond);
 
         if (auto jam = typeinfo_cast<CCMenuItemSpriteExtra*>(sm->getChildByID("zilko.jam/jam-market-button"))) {
-            m_jamListener = jam->m_pListener;
-            m_jamSelector = jam->m_pfnSelector;
-            jam->m_pListener = this;
-            jam->m_pfnSelector = menu_selector(MiniTreasureRoom::interceptedJamBtn);
+            jam->setUserObject("intercepter"_spr, Intercepter::create(jam, [](Intercepter* inter, CCObject* sender) {
+                auto shop = stealLayer<JamMarketLayer>([inter] { inter->callOriginal(nullptr); });
+                if (!shop) return;
+                auto miniJam = MiniLayer<JamMarketLayer>::create(shop, shop->getChildByType<CCMenu*>(0)->getChildByType<CCMenuItemSpriteExtra*>(0));
+                miniJam->addBackgroundNode(shop->getChildByType<CCSprite*>(0));
+                miniJam->show();
+            }));
         }
     }
 
@@ -39,18 +44,6 @@ bool MiniTreasureRoom::init() {
 void MiniTreasureRoom::onClose(CCObject* sender) {
     if (!m_layer->m_inMainLayer) return m_layer->onBack(sender);
     MiniLayer::onClose(sender);
-}
-
-void MiniTreasureRoom::interceptedShopBtn(CCObject* sender) {
-    MiniShopLayer::create(static_cast<ShopType>(sender->getTag()))->show();
-}
-
-void MiniTreasureRoom::interceptedJamBtn(CCObject* sender) {
-    auto shop = stealLayer<JamMarketLayer>([this] {
-        (m_jamListener->*m_jamSelector)(nullptr);
-    });
-    if (!shop) return;
-    MiniJamShopLayer::create(shop)->show();
 }
 
 MiniTreasureRoom* MiniTreasureRoom::create()  {

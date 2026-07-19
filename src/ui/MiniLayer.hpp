@@ -3,7 +3,7 @@
 #include "Geode/utils/cocos.hpp"
 #include <Geode/ui/Popup.hpp>
 
-template <class T>
+template <class InpT = cocos2d::CCLayer*, class T = std::remove_pointer_t<InpT>>
 class MiniLayer : public geode::Popup {
 protected:
     bool init(T* layer, CCMenuItemSpriteExtra* closeBtn) {

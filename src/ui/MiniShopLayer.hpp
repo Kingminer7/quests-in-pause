@@ -11,12 +11,3 @@ protected:
 public:
     static MiniShopLayer* create(ShopType type);
 };
-
-class JamMarketLayer : public CCLayer {};
-
-class MiniJamShopLayer : public MiniLayer<JamMarketLayer> {
-protected:
-    bool init(JamMarketLayer* layer);
-public:
-    static MiniJamShopLayer* create(JamMarketLayer* layer);
-};

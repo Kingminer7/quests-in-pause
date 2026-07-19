@@ -16,15 +16,3 @@ MiniShopLayer* MiniShopLayer::create(ShopType type)  {
     if (ret->init(type)) return ret->autorelease(), ret;
     return delete ret, nullptr;
 }
-
-bool MiniJamShopLayer::init(JamMarketLayer* layer) {
-    if (!MiniLayer::init(layer, layer->getChildByType<CCMenu*>(0)->getChildByType<CCMenuItemSpriteExtra*>(0))) return false;
-    addBackgroundNode(layer->getChildByType<CCSprite>(0));
-    return true;
-}
-
-MiniJamShopLayer* MiniJamShopLayer::create(JamMarketLayer* layer) {
-    auto ret = new MiniJamShopLayer;
-    if (ret->init(layer)) return ret->autorelease(), ret;
-    return delete ret, nullptr;
-}
