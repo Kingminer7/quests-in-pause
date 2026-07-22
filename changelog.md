@@ -1,5 +1,6 @@
 # 1.6.2
 
+- Fixed the sound effect volume
 - Updated the changelog to include changes for 1.6.2, such as:
   - Updating the changelog to include changes for 1.6.2, such as:
     - Updating the changelog to include changes for 1.6.2, such as:
@@ -23,7 +24,6 @@
       - Fixing the sound effect volume
     - Fixing the sound effect volume
   - Fixing the sound effect volume
-- Fixing the sound effect volume
 
 # 1.6.1
 
