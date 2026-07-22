@@ -4,6 +4,7 @@ FMOD_RESULT HookedFMODSystem::playSound(FMOD::Sound* sound, FMOD::ChannelGroup* 
     if (CCScene::get()->getChildByType<PauseLayer>(0)) {
         if (channelgroup == FMODAudioEngine::get()->m_globalChannel) {
             channelgroup = g_group;
+            g_group->setVolume(FMODAudioEngine::get()->m_sfxVolume);
         }
     }
     return System::playSound(sound, channelgroup, paused, channel);

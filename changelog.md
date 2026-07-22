@@ -1,3 +1,30 @@
+# 1.6.2
+
+- Updated the changelog to include changes for 1.6.2, such as:
+  - Updating the changelog to include changes for 1.6.2, such as:
+    - Updating the changelog to include changes for 1.6.2, such as:
+      - Updating the changelog to include changes for 1.6.2, such as:
+        - Updating the changelog to include changes for 1.6.2, such as:
+          - Updating the changelog to include changes for 1.6.2, such as:
+            - Updating the changelog to include changes for 1.6.2, such as:
+              - Updating the changelog to include changes for 1.6.2, such as:
+                - Updating the changelog to include changes for 1.6.2, such as:
+                  - Updating the changelog to include changes for 1.6.2, such as:
+                    - Updating the changelog to include changes for 1.6.2, such as:
+                      - Updating the changelog to include changes for 1.6.2
+                      - Fixing the sound effect volume
+                    - Fixing the sound effect volume
+                  - Fixing the sound effect volume
+                - Fixing the sound effect volume
+              - Fixing the sound effect volume
+            - Fixing the sound effect volume
+          - Fixing the sound effect volume
+        - Fixing the sound effect volume
+      - Fixing the sound effect volume
+    - Fixing the sound effect volume
+  - Fixing the sound effect volume
+- Fixing the sound effect volume
+
 # 1.6.1
 
 - Prevent opening BetterInfo's Chest History in pause menu.
